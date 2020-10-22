@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+
 import com.nhlstenden.amazonsimulatie.graph.Node;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -27,6 +28,7 @@ public class World implements Model {
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
      */
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    List<Stellage> stellages = new ArrayList<>();
 
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
@@ -34,11 +36,12 @@ public class World implements Model {
      */
     public World() {
         this.worldObjects = new ArrayList<>();
-        this.worldObjects.add(new Robot());
-        this.worldObjects.add(new Stellage());
-        this.worldObjects.add(new Vrachtwagen());
+        this.worldObjects.add(new Robot(1,1));
+        this.worldObjects.add(new Robot(2,2));
         buildGraph();
-    }
+        };
+        
+    
 
     /*
      * Deze methode wordt gebruikt om de wereld te updaten. Wanneer deze methode wordt aangeroepen,
@@ -86,6 +89,7 @@ public class World implements Model {
 
     private void buildGraph(){
         List<Node> nodes = new ArrayList<>();
+        
 
         int size = 10;
         int spacing = 3;
@@ -95,9 +99,17 @@ public class World implements Model {
             for (int j = 0; j < size; j++){
                 nodes.add(new Node("Node-" + i + "," + j, i*spacing + offset, j*spacing + offset));
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
+
+                stellages.add(new Stellage(i*spacing + offset,j*spacing + offset));
+                nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
+                continue;
+                }
             }
             
-        }
         
+        
+        for(Stellage s : stellages){
+            this.worldObjects.add(s);
+        }
     }
 }

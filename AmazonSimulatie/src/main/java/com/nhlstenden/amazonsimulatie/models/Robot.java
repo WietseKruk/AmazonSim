@@ -18,8 +18,10 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Robot() {
+    public Robot(double x, double z) {
         this.uuid = UUID.randomUUID();
+        this.x = x;
+        this.z = z;
     }
 
     /*
@@ -37,12 +39,16 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        // if(x < 15) {
-        //     this.x += 0.5;
-        // } else {
-        //     this.z += 0.5;
-        // }
-        
+        if(x < 30) {
+            this.x += 0.5;
+        } 
+        if(x >= 30){
+            this.z += 0.5;
+        }
+        if(x == 30 && z == 30){
+            this.x = 0;
+            this.z = 0;
+        }
         return true;
     }
 

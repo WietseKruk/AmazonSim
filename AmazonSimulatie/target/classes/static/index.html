@@ -95,17 +95,15 @@
                             ];
                             var material = new THREE.MeshFaceMaterial(cubeMaterials);
                             var robot = new THREE.Mesh(geometry, material);
-                            var robot2 = new THREE.Mesh(geometry, material);
+                         
 
                             // var stellage = new THREE.Mesh(geometry2, material);
 
                             robot.position.y = 0.15;
-                            robot.position.x = 3;
-                            robot.position.z = 1;
+                            robot.position.x = 0;
+                            robot.position.z = 0;
 
-                            robot2.position.y = 0.15;
-                            robot2.position.x = 1.5;
-                            robot2.position.z = 1;
+                    
 
                             // stellage.position.y = 1.5;
                             // stellage.position.x = 28.5;
@@ -114,7 +112,7 @@
 
                             var group = new THREE.Group();
                             group.add(robot);
-                            group.add(robot2);
+                            
                             // group.add(stellage);
 
                             scene.add(group);
@@ -133,11 +131,7 @@
                             var material = new THREE.MeshFaceMaterial(cubeMaterials);
 
                             var stellage = new THREE.Mesh(geometry, material);
-
-                            stellage.position.y = 1.5;
-                            stellage.position.x = 28.5;
-                            stellage.position.z = 28.5;
-
+                            stellage.position.y = 1;
                             var group = new THREE.Group();
                       
                             group.add(stellage);
@@ -166,6 +160,27 @@
                             var group = new THREE.Group();
                       
                             group.add(vrachtwagen);
+
+                            scene.add(group);
+                            worldObjects[command.parameters.uuid] = group;
+                        }
+                        if (command.parameters.type == "node") {
+                            var geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+                            var cubeMaterials = [
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                            ];
+                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
+
+                            var node = new THREE.Mesh(geometry, material);
+
+                            var group = new THREE.Group();
+                      
+                            group.add(node);
 
                             scene.add(group);
                             worldObjects[command.parameters.uuid] = group;

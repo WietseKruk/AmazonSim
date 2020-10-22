@@ -18,8 +18,10 @@ public class Stellage implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Stellage() {
+    public Stellage(double x, double z) {
         this.uuid = UUID.randomUUID();
+        this.x = x;
+        this.z = z;
     }
 
     /*
