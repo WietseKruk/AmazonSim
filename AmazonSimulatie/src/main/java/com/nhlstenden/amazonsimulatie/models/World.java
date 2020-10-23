@@ -98,16 +98,18 @@ public class World implements Model {
         int stellageCount = 0;
         int maxStellages = 10;
         boolean filled = true;
+        int nodeValue = 1;
+        int stellageValue = 2;
 
-        for (int i = 0; i < size; i++){
-            for (int j = 0; j < size; j++){
-                nodes.add(new Node("Node-" + i + "," + j, i*spacing + offset, j*spacing + offset));
+        for (int i = 1; i <= size; i++){
+            for (int j = 1; j <= size; j++){
+                nodes.add(new Node("Node", i*spacing + offset, j*spacing + offset, nodeValue));
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
 
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * spacing + offset, j * spacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
+                    nodes.add(new Node("Stellage", i*spacing + offset, j*spacing + offset, stellageValue));
                     
                         if(filled){
                             products.add(new Product(i*spacing + offset,j*spacing + offset, "product" + stellageCount));
@@ -118,19 +120,17 @@ public class World implements Model {
                 continue;
                 }
             }
-            
-        
-        
             for(Product p : products){
-            this.worldObjects.add(p); 
+                this.worldObjects.add(p); 
             }
 
             for(Stellage s : stellages){
                 this.worldObjects.add(s); 
                 }
 
-            
-
-       
+            for(Node n : nodes){
+                n.getValue();
+            }
     }
+
 }

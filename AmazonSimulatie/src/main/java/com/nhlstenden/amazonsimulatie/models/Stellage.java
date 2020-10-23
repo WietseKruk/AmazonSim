@@ -22,6 +22,8 @@ public class Stellage implements Object3D, Updatable {
 
     private boolean filled;
 
+    private int value;
+
     public Stellage(double x, double z, String naam, boolean filled) {
         this.uuid = UUID.randomUUID();
         this.x = x;
@@ -41,6 +43,15 @@ public class Stellage implements Object3D, Updatable {
     public void setNaam(String naam){
         this.naam = naam;
     }
+
+    public int getValue(){
+        return value;
+    }
+
+    public void setValue(int value){
+        this.value = value;
+    }
+
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
