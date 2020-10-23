@@ -94,22 +94,31 @@ public class World implements Model {
         int size = 10;
         int spacing = 3;
         int offset = 1;
+        int stellageCount = 0;
+        int maxStellages = 10;
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
                 nodes.add(new Node("Node-" + i + "," + j, i*spacing + offset, j*spacing + offset));
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
 
+                if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 stellages.add(new Stellage(i*spacing + offset,j*spacing + offset, "naam"));
                 nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
+                stellageCount++;
+                }
                 continue;
                 }
             }
             
         
         
-        for(Stellage s : stellages){
-            this.worldObjects.add(s);
-        }
+            for(Stellage s : stellages){
+            this.worldObjects.add(s); 
+            }
+
+            
+
+       
     }
 }
