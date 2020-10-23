@@ -20,17 +20,22 @@ public class Stellage implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private boolean pickedUp;
+    private boolean filled;
 
-    public Stellage(double x, double z, String naam) {
+    public Stellage(double x, double z, String naam, boolean filled) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.naam = naam;
+        this.filled = filled;
     }
 
     public String getNaam(){
         return naam;
+    }
+
+    public boolean isFilled(){
+        return filled;
     }
 
     public void setNaam(String naam){
@@ -50,13 +55,7 @@ public class Stellage implements Object3D, Updatable {
      * in de view)
      */
     @Override
-    public boolean update() {
-        if(isPickedUp()){
-            //this.x = x-coordinaat van robot;
-            //this.y = 0.3 iets hoger zodat het lijkt alsof hij gedragen wordt;
-            //this.z = z-coordinaat van robot;
-        }
-        
+    public boolean update() {      
         return true;
     }
 
@@ -74,14 +73,6 @@ public class Stellage implements Object3D, Updatable {
          * javascript code wordt dit dan weer verder afgehandeld.
          */
         return Stellage.class.getSimpleName().toLowerCase();
-    }
-
-    public boolean isPickedUp(){
-        return pickedUp;
-    }
-
-    public void setPickedUp(boolean pickedUp){
-        this.pickedUp = pickedUp;
     }
 
     @Override

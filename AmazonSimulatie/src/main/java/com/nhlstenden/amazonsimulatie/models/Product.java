@@ -7,21 +7,35 @@ import java.util.UUID;
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-public class Vrachtwagen implements Object3D, Updatable {
+public class Product implements Object3D, Updatable {
     private UUID uuid;
 
     private double x = 0;
     private double y = 0;
     private double z = 0;
 
+    private String naam;
+
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Vrachtwagen() {
+    private boolean pickedUp;
+
+    public Product(double x, double z, String naam) {
         this.uuid = UUID.randomUUID();
+        this.x = x;
+        this.z = z;
+        this.naam = naam;
     }
 
+    public String getNaam(){
+        return naam;
+    }
+
+    public void setNaam(String naam){
+        this.naam = naam;
+    }
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
@@ -37,11 +51,11 @@ public class Vrachtwagen implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        // if(x < 15) {
-        //     this.x += 0.5;
-        // } else {
-        //     this.z += 0.5;
-        // }
+        if(isPickedUp()){
+            //this.x = x-coordinaat van robot;
+            //this.y = 0.3 iets hoger zodat het lijkt alsof hij gedragen wordt;
+            //this.z = z-coordinaat van robot;
+        }
         
         return true;
     }
@@ -60,6 +74,14 @@ public class Vrachtwagen implements Object3D, Updatable {
          * javascript code wordt dit dan weer verder afgehandeld.
          */
         return Product.class.getSimpleName().toLowerCase();
+    }
+
+    public boolean isPickedUp(){
+        return pickedUp;
+    }
+
+    public void setPickedUp(boolean pickedUp){
+        this.pickedUp = pickedUp;
     }
 
     @Override

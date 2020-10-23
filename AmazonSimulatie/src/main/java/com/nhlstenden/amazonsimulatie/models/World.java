@@ -28,6 +28,7 @@ public class World implements Model {
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
      */
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
 
     /*
@@ -93,9 +94,10 @@ public class World implements Model {
 
         int size = 10;
         int spacing = 3;
-        int offset = 1;
+        int offset = 3;
         int stellageCount = 0;
         int maxStellages = 10;
+        boolean filled = true;
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
@@ -103,9 +105,15 @@ public class World implements Model {
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
 
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
-                stellages.add(new Stellage(i*spacing + offset,j*spacing + offset, "naam"));
-                nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
-                stellageCount++;
+                
+                    stellages.add(new Stellage(i * spacing + offset, j * spacing + offset, "stellage" + stellageCount, filled));
+                    nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
+                    
+                        if(filled){
+                            products.add(new Product(i*spacing + offset,j*spacing + offset, "product" + stellageCount));
+                            System.out.println(products.get(stellageCount).getNaam());
+                        }  
+                    stellageCount++;
                 }
                 continue;
                 }
@@ -113,9 +121,13 @@ public class World implements Model {
             
         
         
-            for(Stellage s : stellages){
-            this.worldObjects.add(s); 
+            for(Product p : products){
+            this.worldObjects.add(p); 
             }
+
+            for(Stellage s : stellages){
+                this.worldObjects.add(s); 
+                }
 
             
 
