@@ -25,9 +25,15 @@
 
             var worldObjects = {};
 
+            var gltfLoader;
+
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
                 cameraControls = new THREE.OrbitControls(camera);
+
+                gltfLoader = new THREE.GLTFLoader();
+                gltfLoader.setPath();
+                
                 camera.position.z = 15;
                 camera.position.y = 5;
                 camera.position.x = 15;
@@ -38,14 +44,18 @@
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
                 document.body.appendChild(renderer.domElement);
+                renderer.shadowMapEnabled = true;
+                renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+                renderer.gammaInput = true;
+				renderer.gammaOutput = true;
 
                 window.addEventListener('resize', onWindowResize, false);
 
-                var geometry = new THREE.PlaneGeometry(30, 30, 30);
+
+                var geometry = new THREE.PlaneGeometry(30, 30, 32);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/floor.jpg"), side: THREE.DoubleSide })
                 var plane = new THREE.Mesh(geometry, material);
-
-
                 plane.rotation.x = Math.PI / 2.0;
                 plane.position.x = 15;
                 plane.position.z = 15;
@@ -113,7 +123,7 @@
                             worldObjects[command.parameters.uuid] = group;
                         }
                         if (command.parameters.type == "product") {
-                            var geometry = new THREE.BoxGeometry(0.7, 0.5, 0.7);
+                            var geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
 
                             var cubeMaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
@@ -127,7 +137,7 @@
 
                             var box = new THREE.Mesh(geometry, material);
                             
-                            box.position.y = 0.9;
+                            box.position.y = 0.3;
                             var group = new THREE.Group();
                       
                             group.add(box);
@@ -137,27 +147,24 @@
                         }
 
                         if (command.parameters.type == "stellage") {
-                            var geometry = new THREE.BoxGeometry(1, 0.7, 3);
-
-                            var cubeMaterials = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                            ];
-                            var material = new THREE.MeshFaceMaterial(cubeMaterials);
-
-                            var stellage = new THREE.Mesh(geometry, material);
-                            
-                            stellage.position.y = 0.35;
                             var group = new THREE.Group();
-                      
-                            group.add(stellage);
+                            gltfLoader.load('models/model.gltf', (gltf) => {
+                                const root = gltf.scene;
+                                root.position.y = 0.6;
 
+                                group.add(root);
+                                
+                                root.traverse((obj) => {
+                                    if (obj.castShadow !== undefined){
+                                        obj.castShadow = true;
+                                        obj.receiveShadow = true;
+                                    }
+                                })
+                                
+                            });
                             scene.add(group);
                             worldObjects[command.parameters.uuid] = group;
+                        
                         }
 
                         if (command.parameters.type == "vrachtwagen") {
@@ -230,6 +237,7 @@
 
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
+    <script src="GLTFLoader.js"></script>
 </body>
 
 </html>
