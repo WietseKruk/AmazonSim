@@ -100,7 +100,7 @@ public class World implements Model {
                 nodes.add(new Node("Node-" + i + "," + j, i*spacing + offset, j*spacing + offset));
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
 
-                stellages.add(new Stellage(i*spacing + offset,j*spacing + offset));
+                stellages.add(new Stellage(i*spacing + offset,j*spacing + offset, "naam"));
                 nodes.add(new Node("Stellage" + i + "," + j, i*spacing + offset, j*spacing + offset));
                 continue;
                 }

@@ -97,29 +97,23 @@
                             var robot = new THREE.Mesh(geometry, material);
                          
 
-                            // var stellage = new THREE.Mesh(geometry2, material);
-
                             robot.position.y = 0.15;
                             robot.position.x = 0;
                             robot.position.z = 0;
 
-                    
-
-                            // stellage.position.y = 1.5;
-                            // stellage.position.x = 28.5;
-                            // stellage.position.z = 28.5;
 
 
                             var group = new THREE.Group();
                             group.add(robot);
                             
-                            // group.add(stellage);
-
+                            
                             scene.add(group);
                             worldObjects[command.parameters.uuid] = group;
                         }
                         if (command.parameters.type == "stellage") {
                             var geometry = new THREE.BoxGeometry(1, 1, 1);
+                            var legs = new THREE.BoxGeometry(0.1, 2, 0.1);
+
                             var cubeMaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
@@ -131,6 +125,7 @@
                             var material = new THREE.MeshFaceMaterial(cubeMaterials);
 
                             var stellage = new THREE.Mesh(geometry, material);
+                            
                             stellage.position.y = 1;
                             var group = new THREE.Group();
                       
