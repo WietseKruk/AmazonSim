@@ -24,6 +24,7 @@ class Robot implements Object3D, Updatable {
     private double rotationZ = 0;
     private Graph graph;
     private List<Node> nodes;
+    private double speed = 0.25;
     
     private int nodeCounter = 0;
 
@@ -50,15 +51,32 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
+
+        //update x coordinaat
         if (x != nodes.get(nodeCounter).getX()) {
-            x = nodes.get(nodeCounter).getX();
+            if(x < nodes.get(nodeCounter).getX()){
+                x += speed;
+            }
+            else{
+                x -= speed;
+            }
         }
-        if(z != nodes.get(nodeCounter).getZ()){
-            z = nodes.get(nodeCounter).getZ();
+        //update z coordinaat
+        else if(z != nodes.get(nodeCounter).getZ()){
+            if(z < nodes.get(nodeCounter).getZ()){
+                z += speed;
+            }
+            else{
+                z -= speed;
+            }
         }
+
+        //als de node is bereikt, nodeCounter omhoog(ga naar volgende node)
         if(x == nodes.get(nodeCounter).getX() && z == nodes.get(nodeCounter).getZ()){
             nodeCounter++;
         }
+
+        //reset
         if (x == graph.getNodeByName("Source").getX() && z == graph.getNodeByName("Source").getZ()){
             nodeCounter = 0;
             x = nodes.get(0).getX();
