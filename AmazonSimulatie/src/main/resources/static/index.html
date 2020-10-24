@@ -7,7 +7,6 @@
 </head>
 
 <body style="margin:0px;padding:0px;overflow:hidden;">
-
     <!--
         Deze pagina is de standaardpagina van de client. Hierin wordt de 3D wereld opgezet en wordt geluisterd
         naar updates vanaf de server over de websocket communicatie.
@@ -39,8 +38,8 @@
                 camera.position.x = 15;
                 cameraControls.update();
                 scene = new THREE.Scene();
-
-                renderer = new THREE.WebGLRenderer({ antialias: true });
+                
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
                 document.body.appendChild(renderer.domElement);
@@ -53,7 +52,7 @@
                 window.addEventListener('resize', onWindowResize, false);
 
 
-                var geometry = new THREE.PlaneGeometry(30, 30, 32);
+                var geometry = new THREE.PlaneGeometry(30, 32, 32);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/floor.jpg"), side: THREE.DoubleSide })
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
@@ -96,7 +95,7 @@
                         //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
                         if (command.parameters.type == "robot") {
                             var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                            // var geometry2 = new THREE.BoxGeometry(1, 1, 1);
+                            
                             var cubeMaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
@@ -123,21 +122,21 @@
                             worldObjects[command.parameters.uuid] = group;
                         }
                         if (command.parameters.type == "product") {
-                            var geometry = new THREE.BoxGeometry(0.4, 0.4, 0.4);
+                            var geometry = new THREE.BoxGeometry(1, 1, 1);
 
                             var cubeMaterials = [
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //LEFT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //RIGHT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //TOP
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //BOTTOM
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //FRONT
+                                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/crateside.jpg"), side: THREE.DoubleSide }), //BACK
                             ];
                             var material = new THREE.MeshFaceMaterial(cubeMaterials);
 
                             var box = new THREE.Mesh(geometry, material);
                             
-                            box.position.y = 0.3;
+                            box.position.y = 2.1;
                             var group = new THREE.Group();
                       
                             group.add(box);
@@ -150,8 +149,9 @@
                             var group = new THREE.Group();
                             gltfLoader.load('models/model.gltf', (gltf) => {
                                 const root = gltf.scene;
-                                root.position.y = 0.6;
-
+                                root.position.y = 1;                                
+                                root.scale.set(4,3,4);
+                                
                                 group.add(root);
                                 
                                 root.traverse((obj) => {

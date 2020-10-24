@@ -2,13 +2,13 @@ package com.nhlstenden.amazonsimulatie.graph;
 import java.util.*;
 
 public class Graph {
-    private Set<Node> nodes = new HashSet<>();
+    List<Node> nodes = new ArrayList<>();
 
     public void addNode(Node node){
         nodes.add(node);
     }
 
-    public Set<Node> getGraph(){
+    public List<Node> getGraph(){
         return nodes;
     }
 
@@ -19,6 +19,16 @@ public class Graph {
                 result = n;
                 break;
             }    
+        }
+        return result;
+    }
+
+    public Node getNodeByName(String name){
+        Node result = null;
+        for (Node n : nodes){
+            if (n.getNaam().equals(name)){
+                result = n;
+            }
         }
         return result;
     }

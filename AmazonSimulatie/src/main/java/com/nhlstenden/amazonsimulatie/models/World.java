@@ -1,11 +1,12 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 
-import com.nhlstenden.amazonsimulatie.graph.Node;
+import com.nhlstenden.amazonsimulatie.graph.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /*
  * Deze class is een versie van het model van de simulatie. In dit geval is het
@@ -30,16 +31,19 @@ public class World implements Model {
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
+    Graph graph = new Graph();
 
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
      */
     public World() {
+        
         this.worldObjects = new ArrayList<>();
-        this.worldObjects.add(new Robot(1,1));
-        this.worldObjects.add(new Robot(2,2));
         buildGraph();
+        this.worldObjects.add(new Robot(graph));
+        this.worldObjects.add(new Robot(graph));
+        
         };
         
     
@@ -92,30 +96,36 @@ public class World implements Model {
         List<Node> nodes = new ArrayList<>();
         
 
-        int size = 10;
-        int spacing = 3;
-        int offset = 3;
+        final int size = 9;
+        final int spacing = 3;
+        final int offset = 3;
         int stellageCount = 0;
-        int maxStellages = 10;
+        final int maxStellages = 10;
         boolean filled = true;
-        int nodeValue = 1;
-        int stellageValue = 2;
+        final int nodeValue = 1;
+        final int stellageValue = 2;
+        final int sourceNode = 8;
 
-        for (int i = 1; i <= size; i++){
-            for (int j = 1; j <= size; j++){
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
                 nodes.add(new Node("Node", i*spacing + offset, j*spacing + offset, nodeValue));
                 System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
-
+                if(i == sourceNode && j == sourceNode){
+                        nodes.add(new Node("Source", i*spacing + offset, j*spacing + offset, nodeValue));
+                        continue;
+                    }
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * spacing + offset, j * spacing + offset, "stellage" + stellageCount, filled));
                     nodes.add(new Node("Stellage", i*spacing + offset, j*spacing + offset, stellageValue));
-                    
+
                         if(filled){
                             products.add(new Product(i*spacing + offset,j*spacing + offset, "product" + stellageCount));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
                     stellageCount++;
+
+                       
                 }
                 continue;
                 }
@@ -129,7 +139,7 @@ public class World implements Model {
                 }
 
             for(Node n : nodes){
-                n.getValue();
+                graph.addNode(n);
             }
     }
 

@@ -1,6 +1,11 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
+import com.nhlstenden.amazonsimulatie.graph.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
@@ -17,11 +22,17 @@ class Robot implements Object3D, Updatable {
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
+    private Graph graph;
+    private List<Node> nodes;
+    
+    private int nodeCounter = 0;
 
-    public Robot(double x, double z) {
+    public Robot(Graph graph) {
         this.uuid = UUID.randomUUID();
-        this.x = x;
-        this.z = z;
+        this.graph = graph;
+        x = graph.getNodeByName("Source").getX();
+        z = graph.getNodeByName("Source").getZ();
+        this.nodes = graph.getGraph();
     }
 
     /*
@@ -39,15 +50,19 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if(x < 30) {
-            this.x += 0.5;
-        } 
-        if(x >= 30){
-            this.z += 0.5;
+        if (x != nodes.get(nodeCounter).getX()) {
+            x = nodes.get(nodeCounter).getX();
         }
-        if(x == 30 && z == 30){
-            this.x = 0;
-            this.z = 0;
+        if(z != nodes.get(nodeCounter).getZ()){
+            z = nodes.get(nodeCounter).getZ();
+        }
+        if(x == nodes.get(nodeCounter).getX() && z == nodes.get(nodeCounter).getZ()){
+            nodeCounter++;
+        }
+        if (x == graph.getNodeByName("Source").getX() && z == graph.getNodeByName("Source").getZ()){
+            nodeCounter = 0;
+            x = nodes.get(0).getX();
+            z = nodes.get(0).getZ();
         }
         return true;
     }
