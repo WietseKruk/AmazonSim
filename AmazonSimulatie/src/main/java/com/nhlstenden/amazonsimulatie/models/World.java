@@ -43,6 +43,7 @@ public class World implements Model {
         buildGraph();
         this.worldObjects.add(new Robot(graph));
         this.worldObjects.add(new Robot(graph));
+
         
         };
         
@@ -92,35 +93,38 @@ public class World implements Model {
         return returnList;
     }
 
+
     private void buildGraph(){
         List<Node> nodes = new ArrayList<>();
         
 
-        final int size = 9;
-        final int spacing = 3;
-        final int offset = 3;
+        final int rowSize = 5;
+        final int columnSize = 9;
+        final int rowSpacing = 5;
+        final int columnSpacing = 3;
+        final int offset = 5;
         int stellageCount = 0;
         final int maxStellages = 10;
         boolean filled = true;
         final int nodeValue = 1;
         final int stellageValue = 2;
-        final int sourceNode = 8;
+        final int sourceNode = 1;
 
-        for (int i = 0; i < size; i++){
-            for (int j = 0; j < size; j++){
-                nodes.add(new Node("Node", i*spacing + offset, j*spacing + offset, nodeValue));
-                System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
-                if(i == sourceNode && j == sourceNode){
-                        nodes.add(new Node("Source", i*spacing + offset, j*spacing + offset, nodeValue));
+        for (int i = 0; i < rowSize; i++){
+            for (int j = 0; j < columnSize; j++){
+                nodes.add(new Node("Node", i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                System.out.println("Node-" + i + "," + j + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+                if(i == 4 && j == 8){
+                        nodes.add(new Node("Source", i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
                         continue;
                     }
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
-                    stellages.add(new Stellage(i * spacing + offset, j * spacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Stellage", i*spacing + offset, j*spacing + offset, stellageValue));
+                    stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
+                    nodes.add(new Node("Stellage", i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
 
                         if(filled){
-                            products.add(new Product(i*spacing + offset,j*spacing + offset, "product" + stellageCount));
+                            products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
                     stellageCount++;

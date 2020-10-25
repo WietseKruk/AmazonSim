@@ -3,7 +3,6 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.util.UUID;
 import com.nhlstenden.amazonsimulatie.graph.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -1,3 +1,4 @@
+  
 <!DOCTYPE html>
 <html>
 
@@ -17,14 +18,13 @@
         }
 
         var socket;
+           
 
         window.onload = function () {
-            var camera, scene, renderer;
+            let camera, scene, renderer;
             var cameraControls;
-
             var worldObjects = {};
-
-            var gltfLoader;
+            let gltfLoader;
 
             function init() {
                 camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
@@ -33,13 +33,13 @@
                 gltfLoader = new THREE.GLTFLoader();
                 gltfLoader.setPath();
                 
-                camera.position.z = 15;
-                camera.position.y = 5;
-                camera.position.x = 15;
+                camera.position.z = 150;
+                camera.position.y = 50;
+                camera.position.x = 150;
                 cameraControls.update();
                 scene = new THREE.Scene();
-                
-                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                scene.background = new THREE.Color(0xdddddd);
+                renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
                 document.body.appendChild(renderer.domElement);
@@ -50,7 +50,6 @@
 				renderer.gammaOutput = true;
 
                 window.addEventListener('resize', onWindowResize, false);
-
 
                 var geometry = new THREE.PlaneGeometry(30, 32, 32);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/floor.jpg"), side: THREE.DoubleSide })
@@ -63,6 +62,20 @@
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
                 scene.add(light);
+
+
+
+                            gltfLoader.load('models/warehouse.gltf', function (gltf) {
+                            warehouse = gltf.scene.children[0];
+                            warehouse.scale.set(2,2,2); 
+                            warehouse.rotation.y = Math.PI / 1.0;                          
+                            warehouse.position.x = 5;
+                            warehouse.position.z = 15;
+                            scene.add(gltf.scene);
+                            animate();
+                            });
+
+                            
             }
 
             function onWindowResize() {
@@ -76,6 +89,29 @@
                 cameraControls.update();
                 renderer.render(scene, camera);
             }
+
+            function buildWarehouse(){
+
+                var group = new THREE.Group();
+                            gltfLoader.load('models/warehouse.gltf', (gltf) => {
+                                const root = gltf.scene;
+                                root.position.y = 1;                                
+                                root.scale.set(4,3,4);
+
+                                group.add(root);
+                                
+                                root.traverse((obj) => {
+                                    if (obj.castShadow !== undefined){
+                                        obj.castShadow = true;
+                                        obj.receiveShadow = true;
+                                    }
+                                })
+                                
+                            });
+                            scene.add(group);
+                            worldObjects[command.parameters.uuid] = group;
+            }
+            
 
             /*
              * Hier wordt de socketcommunicatie geregeld. Er wordt een nieuwe websocket aangemaakt voor het webadres dat we in
@@ -91,6 +127,7 @@
                 if (command.command == "object_update") {
                     //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
                     //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
+                            
                     if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
                         //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
                         if (command.parameters.type == "robot") {
@@ -116,11 +153,14 @@
 
                             var group = new THREE.Group();
                             group.add(robot);
-                            
-                            
+
                             scene.add(group);
-                            worldObjects[command.parameters.uuid] = group;
+                            worldObjects[command.parameters.uuid] = group;  
+
+            
                         }
+
+
                         if (command.parameters.type == "product") {
                             var geometry = new THREE.BoxGeometry(1, 1, 1);
 
@@ -166,6 +206,9 @@
                             worldObjects[command.parameters.uuid] = group;
                         
                         }
+
+                        
+                        
 
                         if (command.parameters.type == "vrachtwagen") {
                             var geometry = new THREE.BoxGeometry(2, 2, 2);
