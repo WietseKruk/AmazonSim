@@ -23,7 +23,6 @@ public class World implements Model {
      * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
      */
     private List<Object3D> worldObjects;
-
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
@@ -31,14 +30,14 @@ public class World implements Model {
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
-    Graph graph = new Graph();
+    private Graph graph;
 
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
      */
     public World() {
-        
+        graph = new Graph(); 
         this.worldObjects = new ArrayList<>();
         buildGraph();
         this.worldObjects.add(new Robot(graph));
@@ -91,11 +90,36 @@ public class World implements Model {
 
         return returnList;
     }
+    public void initGraph(){
+        Graph g = new Graph(); 
+        Node a = new Node("a", 1, 1,1);
+        Node b = new Node("b", 2, 2,1);
+        Node c = new Node("c", 1, 1,1);
+        Node d = new Node("d", 2, 2,1);
+        Node e = new Node("e", 1, 1,1);
+        Node f = new Node("f", 2, 2,1);
+
+        g.addMap(a);
+        g.addMap(b);
+        g.addMap(c);
+        g.addMap(d);
+        g.addMap(e);
+        g.addMap(f);
+
+        graph.addEdge(new Edge(a, b,10));
+        graph.addEdge(new Edge(a, c,15));
+        graph.addEdge(new Edge(b, f,15));
+        graph.addEdge(new Edge(b, d,12));
+        graph.addEdge(new Edge(d, f,1));
+        graph.addEdge(new Edge(d, e,2));
+        graph.addEdge(new Edge(c, e,10));
+        graph.addEdge(new Edge(f, e,5));
+    }
 
     private void buildGraph(){
         List<Node> nodes = new ArrayList<>();
         
-
+        int count = 0; 
         final int size = 9;
         final int spacing = 3;
         final int offset = 3;
@@ -108,8 +132,9 @@ public class World implements Model {
 
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                nodes.add(new Node("Node", i*spacing + offset, j*spacing + offset, nodeValue));
-                System.out.println("Node-" + i + "," + j + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
+
+                nodes.add(new Node("Node" + count, i*spacing + offset, j*spacing + offset, nodeValue));
+                System.out.println("Node-" + count + " x: " + (i*spacing + offset) + " z: " + (j*spacing + offset));
                 if(i == sourceNode && j == sourceNode){
                         nodes.add(new Node("Source", i*spacing + offset, j*spacing + offset, nodeValue));
                         continue;
@@ -121,15 +146,18 @@ public class World implements Model {
 
                         if(filled){
                             products.add(new Product(i*spacing + offset,j*spacing + offset, "product" + stellageCount));
-                            System.out.println(products.get(stellageCount).getNaam());
+                            System.out.println(products.get(stellageCount).getNaam() + i + j);
                         }  
                     stellageCount++;
 
-                       
+                      
                 }
+                count++;
                 continue;
                 }
+            count++;
             }
+            
             for(Product p : products){
                 this.worldObjects.add(p); 
             }
@@ -140,7 +168,7 @@ public class World implements Model {
 
             for(Node n : nodes){
                 graph.addNode(n);
-            }
+            
+        }
     }
-
 }
