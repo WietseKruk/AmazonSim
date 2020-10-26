@@ -10,17 +10,23 @@ public class Node {
     private int value;
     private Map<Node, Integer> connectedNodes = new HashMap<>();
     private boolean isStellage;
+    private int index;
 
-    public Node(String naam, boolean isStellage, int x, int z, int value){
+    public Node(String naam, int index, boolean isStellage, int x, int z, int value){
         this.naam = naam;
         this.x = x;
         this.z = z;
         this.value = value;
         this.isStellage = isStellage;
+        this.index = index;
     }
 
     public boolean isStellage(){
         return isStellage;
+    }
+
+    public int getIndex(){
+        return index;
     }
 
     public String getNaam(){

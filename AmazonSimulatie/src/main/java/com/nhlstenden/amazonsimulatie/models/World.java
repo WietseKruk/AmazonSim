@@ -91,33 +91,51 @@ public class World implements Model {
         return returnList;
     }
     public void initGraph(){
-        // Graph g = new Graph(); 
-        // Node a = new Node("a", 1, 1,1);
-        // Node b = new Node("b", 2, 2,1);
-        // Node c = new Node("c", 1, 1,1);
-        // Node d = new Node("d", 2, 2,1);
-        // Node e = new Node("e", 1, 1,1);
-        // Node f = new Node("f", 2, 2,1);
 
-        for(Node n: nodes){
+        
+
+        for (Node n: nodes){
             graph.addMap(n);
         }
-        // g.addMap(a);
-        // g.addMap(b);
-        // g.addMap(c);
-        // g.addMap(d);
-        // g.addMap(e);
-        // g.addMap(f);
 
-        // graph.addEdge(new Edge(a, b,10));
-        // graph.addEdge(new Edge(a, c,15));
-        // graph.addEdge(new Edge(b, f,15));
-        // graph.addEdge(new Edge(b, d,12));
-        // graph.addEdge(new Edge(d, f,1));
-        // graph.addEdge(new Edge(d, e,2));
-        // graph.addEdge(new Edge(c, e,10));
-        // graph.addEdge(new Edge(f, e,5));
-    }
+        int columnCounter = 1;
+        int rowCounter = 1;
+        int nodeCounter= 0;
+        final int down = 9;
+        final int right = 1;
+
+        for(Node n: nodes){   
+            
+                boolean actionPerformed = false;
+
+                if((columnCounter < 9 && rowCounter < 5) && !actionPerformed){
+                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()), graph.getNodeByIndex((n.getIndex() + right)), 1));
+                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()), graph.getNodeByIndex((n.getIndex() + down)), 1));
+                    System.out.print("Rechts & Onder " + columnCounter + " " + rowCounter + " ");
+                    columnCounter++;
+                    System.out.print("Updated: " + columnCounter + " " + rowCounter + " ");
+                    actionPerformed = true;
+                }
+
+                if(columnCounter == 9 && rowCounter < 5 && !actionPerformed){
+                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()),graph.getNodeByIndex(n.getIndex() + down), 1));
+                    System.out.print("Onder " + columnCounter + " " + rowCounter + " ");
+                    columnCounter = 1;
+                    rowCounter++;
+                    actionPerformed = true;
+                }
+
+                if(rowCounter == 5 && columnCounter < 9 && !actionPerformed){
+                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()),graph.getNodeByIndex(n.getIndex() + right), 1));
+                    System.out.print("Rechts " + columnCounter + " " + rowCounter + " ");
+                    columnCounter++;
+                    actionPerformed = true;
+                }  
+            System.out.println("Node " + nodeCounter);   
+                nodeCounter++;
+        }
+
+    }    
 
 
     private void buildGraph(){
@@ -141,14 +159,14 @@ public class World implements Model {
             for (int j = 0; j < columnSize; j++){
                 
                 if(counter == sourceNode){
-                        nodes.add(new Node("Source", false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                        nodes.add(new Node("Source", counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
                         System.out.println("Node" + counter + " Source" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                         counter++;
                     }
                 else if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Node" + counter, true, i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
+                    nodes.add(new Node("Node" + counter, counter, true, i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
                     System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
 
@@ -161,7 +179,7 @@ public class World implements Model {
                       
                 }
                 else{
-                    nodes.add(new Node("Node" + counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                    nodes.add(new Node("Node" + counter, counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
                     System.out.println("Node" + counter + " Node" +" x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
                 }

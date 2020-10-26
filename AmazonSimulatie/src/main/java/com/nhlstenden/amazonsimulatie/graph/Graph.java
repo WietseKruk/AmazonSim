@@ -63,4 +63,14 @@ public class Graph {
         }
         return result;
     }
+
+    public Node getNodeByIndex(int index){
+        Node result = null;
+        for (Node n : nodes){
+            if (n.getIndex() == index){
+                result = n;
+            }
+        }
+        return result;
+    }
 }

@@ -76,7 +76,12 @@ class Robot implements Object3D, Updatable {
         }
 
         //reset
-        if (x == graph.getNodeByName("Source").getX() && z == graph.getNodeByName("Source").getZ()){
+        // if (x == graph.getNodeByName("Source").getX() && z == graph.getNodeByName("Source").getZ()){
+        //     nodeCounter = 0;
+        //     x = nodes.get(0).getX();
+        //     z = nodes.get(0).getZ();
+        // }
+        if (x == nodes.get(nodes.size()-1).getX() && z == nodes.get(nodes.size()-1).getZ()){
             nodeCounter = 0;
             x = nodes.get(0).getX();
             z = nodes.get(0).getZ();
