@@ -3,13 +3,14 @@ package com.nhlstenden.amazonsimulatie.graph;
 public class Edge {
     private Node start;
     private Node einde;
-    private int kosten; 
-
-    public Edge(Node start, Node einde, int kosten){
+    private double kosten; 
+    
+    public Edge(Node start, Node einde, double kosten){
         this.start = start;
         this.einde = einde;
         this.kosten = kosten;
     }
+
 
     public Node getStart(){
         return start;
@@ -27,7 +28,7 @@ public class Edge {
         this.einde = einde;
     }
 
-    public int getKosten(){
+    public double getKosten(){
         return kosten;
     }
 

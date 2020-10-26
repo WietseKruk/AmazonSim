@@ -21,29 +21,17 @@ public class Graph {
         return buren.get(node);
     }
 
-    public void addVerbinding(Node node){
+    public void addMap(Node node){
         buren.putIfAbsent(node, new ArrayList());
     }
 
-    // public void addEdge(List<Edge> edges){
-    //     for(Edge e : edges){
-    //     buren.get(e.getStart()).add(e.getEinde());
-    //     buren.get(e.getEinde()).add(e.getEinde());
-    //     }
-
-    // }
     public void addEdge(Edge edge){
         buren.get(edge.getStart()).add(edge.getEinde());
         buren.get(edge.getEinde()).add(edge.getEinde());
     }
 
-    // public void addEdge(Edge edge, Edge edge2){
-    //     buren.get(edge.getStart()).add(edge.getEinde());
-    //     buren.get(edge.getEinde()).add(edge.getEinde());
-    //     buren.get(edge2.getStart()).add(edge2.getEinde());
-    //     buren.get(edge2.getEinde()).add(edge2.getEinde());
-    // }
 
+    
     
     List<Node> nodes = new ArrayList<>();
 

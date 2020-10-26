@@ -8,7 +8,6 @@ public class Node {
     private int x;
     private int z;
     private int value;
-
     private Map<Node, Integer> connectedNodes = new HashMap<>();
 
     public Node(String naam, int x, int z, int value){
@@ -40,8 +39,5 @@ public class Node {
 
     public void addConnectedNode(Node connectedNode, int value){
         connectedNodes.put(connectedNode, value);
-    }
-
-
-    
+    }  
 }
