@@ -23,7 +23,7 @@ class Robot implements Object3D, Updatable {
     private double rotationZ = 0;
     private Graph graph;
     private List<Node> nodes;
-    private double speed = 0.25;
+    private double speed = 0.5;
     
     private int nodeCounter = 0;
 

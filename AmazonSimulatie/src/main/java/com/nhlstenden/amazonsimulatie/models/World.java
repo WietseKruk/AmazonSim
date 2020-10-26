@@ -31,7 +31,7 @@ public class World implements Model {
     List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
     private Graph graph;
-
+    List<Node> nodes = new ArrayList<>();
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
@@ -40,10 +40,9 @@ public class World implements Model {
         graph = new Graph(); 
         this.worldObjects = new ArrayList<>();
         buildGraph();
+        initGraph();
         this.worldObjects.add(new Robot(graph));
         this.worldObjects.add(new Robot(graph));
-
-        
         };
         
     
@@ -92,34 +91,37 @@ public class World implements Model {
         return returnList;
     }
     public void initGraph(){
-        Graph g = new Graph(); 
-        Node a = new Node("a", 1, 1,1);
-        Node b = new Node("b", 2, 2,1);
-        Node c = new Node("c", 1, 1,1);
-        Node d = new Node("d", 2, 2,1);
-        Node e = new Node("e", 1, 1,1);
-        Node f = new Node("f", 2, 2,1);
+        // Graph g = new Graph(); 
+        // Node a = new Node("a", 1, 1,1);
+        // Node b = new Node("b", 2, 2,1);
+        // Node c = new Node("c", 1, 1,1);
+        // Node d = new Node("d", 2, 2,1);
+        // Node e = new Node("e", 1, 1,1);
+        // Node f = new Node("f", 2, 2,1);
 
-        g.addMap(a);
-        g.addMap(b);
-        g.addMap(c);
-        g.addMap(d);
-        g.addMap(e);
-        g.addMap(f);
+        for(Node n: nodes){
+            graph.addMap(n);
+        }
+        // g.addMap(a);
+        // g.addMap(b);
+        // g.addMap(c);
+        // g.addMap(d);
+        // g.addMap(e);
+        // g.addMap(f);
 
-        graph.addEdge(new Edge(a, b,10));
-        graph.addEdge(new Edge(a, c,15));
-        graph.addEdge(new Edge(b, f,15));
-        graph.addEdge(new Edge(b, d,12));
-        graph.addEdge(new Edge(d, f,1));
-        graph.addEdge(new Edge(d, e,2));
-        graph.addEdge(new Edge(c, e,10));
-        graph.addEdge(new Edge(f, e,5));
+        // graph.addEdge(new Edge(a, b,10));
+        // graph.addEdge(new Edge(a, c,15));
+        // graph.addEdge(new Edge(b, f,15));
+        // graph.addEdge(new Edge(b, d,12));
+        // graph.addEdge(new Edge(d, f,1));
+        // graph.addEdge(new Edge(d, e,2));
+        // graph.addEdge(new Edge(c, e,10));
+        // graph.addEdge(new Edge(f, e,5));
     }
 
 
     private void buildGraph(){
-        List<Node> nodes = new ArrayList<>();
+        
         
 
         final int rowSize = 5;
@@ -132,33 +134,39 @@ public class World implements Model {
         boolean filled = true;
         final int nodeValue = 1;
         final int stellageValue = 2;
-        final int sourceNode = 1;
+        final int sourceNode = 40;
+        int counter = 0;
 
         for (int i = 0; i < rowSize; i++){
             for (int j = 0; j < columnSize; j++){
-                nodes.add(new Node("Node", i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
-                System.out.println("Node-" + i + "," + j + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
-                if(i == 4 && j == 8){
-                        nodes.add(new Node("Source", i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
-                        continue;
+                
+                if(counter == sourceNode){
+                        nodes.add(new Node("Source", false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                        System.out.println("Node" + counter + " Source" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+                        counter++;
                     }
-                if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
+                else if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Stellage", i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
+                    nodes.add(new Node("Node" + counter, true, i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
+                    System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+                    counter++;
 
                         if(filled){
                             products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
                     stellageCount++;
-
+                    
                       
                 }
-                
+                else{
+                    nodes.add(new Node("Node" + counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                    System.out.println("Node" + counter + " Node" +" x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+                    counter++;
+                }
                 continue;
                 }
-            
             }
             
             for(Product p : products){

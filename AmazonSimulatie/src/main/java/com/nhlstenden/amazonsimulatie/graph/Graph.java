@@ -3,21 +3,21 @@ package com.nhlstenden.amazonsimulatie.graph;
 import java.util.*;
 
 public class Graph {
-    private Map<Node, List> buren; 
+    private Map<Node, List<Node>> buren; 
     
     public Graph(){
         buren = new LinkedHashMap();
     }
     
-    public Map<Node, List> getBuren(){
+    public Map<Node, List<Node>> getBuren(){
         return buren;
     }
     
-    public void setBuren(Map<Node, List> buren){
+    public void setBuren(Map<Node, List<Node>> buren){
         this.buren = buren;
     }
 
-    public List getList(Node node){
+    public List<Node> getBurenByNode(Node node){
         return buren.get(node);
     }
 

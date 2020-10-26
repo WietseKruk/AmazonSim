@@ -9,12 +9,18 @@ public class Node {
     private int z;
     private int value;
     private Map<Node, Integer> connectedNodes = new HashMap<>();
+    private boolean isStellage;
 
-    public Node(String naam, int x, int z, int value){
+    public Node(String naam, boolean isStellage, int x, int z, int value){
         this.naam = naam;
         this.x = x;
         this.z = z;
         this.value = value;
+        this.isStellage = isStellage;
+    }
+
+    public boolean isStellage(){
+        return isStellage;
     }
 
     public String getNaam(){
