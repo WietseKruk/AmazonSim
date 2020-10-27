@@ -27,7 +27,7 @@ public class Graph {
 
     public void addEdge(Edge edge){
         buren.get(edge.getStart()).add(edge.getEinde());
-        buren.get(edge.getEinde()).add(edge.getEinde());
+        buren.get(edge.getEinde()).add(edge.getStart());
     }
 
 
