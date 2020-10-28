@@ -211,7 +211,7 @@
                         
 
                         if (command.parameters.type == "vrachtwagen") {
-                            var geometry = new THREE.BoxGeometry(2, 2, 2);
+                            var geometry = new THREE.BoxGeometry(4, 6, 10);
                             var cubeMaterials = [
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
                                 new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
@@ -224,9 +224,9 @@
 
                             var vrachtwagen = new THREE.Mesh(geometry, material);
 
-                            vrachtwagen.position.y = 2;
+                            vrachtwagen.position.y = 3;
                             vrachtwagen.position.x = 10;
-                            vrachtwagen.position.z = 10;
+                            vrachtwagen.position.z = -100;
 
                             var group = new THREE.Group();
                       

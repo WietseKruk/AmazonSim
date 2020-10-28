@@ -32,6 +32,7 @@ public class World implements Model {
     List<Stellage> stellages = new ArrayList<>();
     private Graph graph;
     List<Node> nodes = new ArrayList<>();
+
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
@@ -43,6 +44,7 @@ public class World implements Model {
         initGraph();
         this.worldObjects.add(new Robot(graph));
         this.worldObjects.add(new Robot(graph));
+        this.worldObjects.add(new Vrachtwagen(10));
         };
         
     
