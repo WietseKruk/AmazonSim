@@ -38,7 +38,7 @@
                 camera.position.x = 150;
                 cameraControls.update();
                 scene = new THREE.Scene();
-                scene.background = new THREE.Color(0xdddddd);
+                scene.background = new THREE.Color("rgb(100, 105, 112)");
                 renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setPixelRatio(window.devicePixelRatio);
                 renderer.setSize(window.innerWidth, window.innerHeight + 5);
@@ -51,7 +51,7 @@
 
                 window.addEventListener('resize', onWindowResize, false);
 
-                var geometry = new THREE.PlaneGeometry(30, 32, 32);
+                var geometry = new THREE.PlaneGeometry(200, 200, 200);
                 var material = new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/floor.jpg"), side: THREE.DoubleSide })
                 var plane = new THREE.Mesh(geometry, material);
                 plane.rotation.x = Math.PI / 2.0;
@@ -75,7 +75,27 @@
                             animate();
                             });
 
-                            
+                            gltfLoader.load('models/car.gltf', function (gltf) {
+                            car = gltf.scene.children[0];
+                            car.scale.set(0.3,0.3,0.3  );                       
+                            car.position.x = 30;
+                            car.position.z = 70;
+                            scene.add(gltf.scene);
+                            animate();
+                            });
+
+                            gltfLoader.load('models/oldCar.gltf', function (gltf) {
+                            car1 = gltf.scene.children[0];
+                            car1.scale.set(0.7,0.7,0.7);                       
+                            car1.position.x = 50;
+                            car1.position.z = -20;
+                            car1.position.y = 9;
+                            scene.add(gltf.scene);
+                            animate();
+                            });
+
+          
+
             }
 
             function onWindowResize() {
@@ -90,28 +110,6 @@
                 renderer.render(scene, camera);
             }
 
-            function buildWarehouse(){
-
-                var group = new THREE.Group();
-                            gltfLoader.load('models/warehouse.gltf', (gltf) => {
-                                const root = gltf.scene;
-                                root.position.y = 1;                                
-                                root.scale.set(4,3,4);
-
-                                group.add(root);
-                                
-                                root.traverse((obj) => {
-                                    if (obj.castShadow !== undefined){
-                                        obj.castShadow = true;
-                                        obj.receiveShadow = true;
-                                    }
-                                })
-                                
-                            });
-                            scene.add(group);
-                            worldObjects[command.parameters.uuid] = group;
-            }
-            
 
             /*
              * Hier wordt de socketcommunicatie geregeld. Er wordt een nieuwe websocket aangemaakt voor het webadres dat we in
@@ -281,6 +279,7 @@
     <script src="three.min.js"></script>
     <script src="OrbitControls.js"></script>
     <script src="GLTFLoader.js"></script>
+
 </body>
 
 </html>
