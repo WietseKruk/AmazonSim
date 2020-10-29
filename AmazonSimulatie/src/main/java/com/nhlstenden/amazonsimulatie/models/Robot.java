@@ -1,7 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 import java.util.UUID;
-import com.nhlstenden.amazonsimulatie.graph.*;
+// import com.nhlstenden.amazonsimulatie.graph.*;
 
 import java.util.List;
 
@@ -21,18 +21,18 @@ class Robot implements Object3D, Updatable {
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
-    private Graph graph;
+    // private Graph graph;
     private List<Node> nodes;
     private double speed = 0.5;
-    
-    private int nodeCounter = 0;
+    // private String node = "Node40";
+    private int counter = 0;
 
     public Robot(Graph graph) {
         this.uuid = UUID.randomUUID();
-        this.graph = graph;
-        x = graph.getNodeByName("Source").getX();
-        z = graph.getNodeByName("Source").getZ();
-        this.nodes = graph.getGraph();
+        // this.graph = graph; 
+        // x = graph.getNodeByName(node).getX();
+        // z = graph.getNodeByName(node).getZ();
+        
     }
 
     /*
@@ -52,8 +52,8 @@ class Robot implements Object3D, Updatable {
     public boolean update() {
 
         //update x coordinaat
-        if (x != nodes.get(nodeCounter).getX()) {
-            if(x < nodes.get(nodeCounter).getX()){
+        if (x != nodes.get(counter).getX()) {
+            if(x < nodes.get(counter).getX()){
                 x += speed;
             }
             else{
@@ -61,8 +61,8 @@ class Robot implements Object3D, Updatable {
             }
         }
         //update z coordinaat
-        else if(z != nodes.get(nodeCounter).getZ()){
-            if(z < nodes.get(nodeCounter).getZ()){
+        else if(z != nodes.get(counter).getZ()){
+            if(z < nodes.get(counter).getZ()){
                 z += speed;
             }
             else{
@@ -71,8 +71,8 @@ class Robot implements Object3D, Updatable {
         }
 
         //als de node is bereikt, nodeCounter omhoog(ga naar volgende node)
-        if(x == nodes.get(nodeCounter).getX() && z == nodes.get(nodeCounter).getZ()){
-            nodeCounter++;
+        if(x == nodes.get(counter).getX() && z == nodes.get(counter).getZ()){
+            counter++;
         }
 
         //reset
@@ -82,7 +82,7 @@ class Robot implements Object3D, Updatable {
         //     z = nodes.get(0).getZ();
         // }
         if (x == nodes.get(nodes.size()-1).getX() && z == nodes.get(nodes.size()-1).getZ()){
-            nodeCounter = 0;
+            counter = 0;
             x = nodes.get(0).getX();
             z = nodes.get(0).getZ();
         }

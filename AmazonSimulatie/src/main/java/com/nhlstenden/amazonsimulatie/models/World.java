@@ -1,10 +1,9 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-
-import com.nhlstenden.amazonsimulatie.graph.*;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -28,23 +27,27 @@ public class World implements Model {
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
      */
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    
+    private List<Node> nodes;
+    private List<Edge> edges;
     List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
     private Graph graph;
-    List<Node> nodes = new ArrayList<>();
+    // List<Node> nodes = new ArrayList<>();
 
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
      */
     public World() {
-        graph = new Graph(); 
+        // graph = new Graph(); 
         this.worldObjects = new ArrayList<>();
-        buildGraph();
-        initGraph();
+        // buildGraph();
+        // initGraph();
         this.worldObjects.add(new Robot(graph));
         this.worldObjects.add(new Robot(graph));
         this.worldObjects.add(new Vrachtwagen(10));
+        testExcute();
         };
         
     
@@ -92,57 +95,8 @@ public class World implements Model {
 
         return returnList;
     }
-    public void initGraph(){
-
-        
-
-        for (Node n: nodes){
-            graph.addMap(n);
-        }
-
-        int columnCounter = 1;
-        int rowCounter = 1;
-        int nodeCounter= 0;
-        final int down = 9;
-        final int right = 1;
-
-        for(Node n: nodes){   
-            
-                boolean actionPerformed = false;
-
-                if((columnCounter < 9 && rowCounter < 5) && !actionPerformed){
-                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()), graph.getNodeByIndex((n.getIndex() + right)), 1));
-                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()), graph.getNodeByIndex((n.getIndex() + down)), 1));
-                    System.out.print("Rechts & Onder " + columnCounter + " " + rowCounter + " ");
-                    columnCounter++;
-                    System.out.print("Updated: " + columnCounter + " " + rowCounter + " ");
-                    actionPerformed = true;
-                }
-
-                if(columnCounter == 9 && rowCounter < 5 && !actionPerformed){
-                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()),graph.getNodeByIndex(n.getIndex() + down), 1));
-                    System.out.print("Onder " + columnCounter + " " + rowCounter + " ");
-                    columnCounter = 1;
-                    rowCounter++;
-                    actionPerformed = true;
-                }
-
-                if(rowCounter == 5 && columnCounter < 9 && !actionPerformed){
-                    graph.addEdge(new Edge(graph.getNodeByIndex(n.getIndex()),graph.getNodeByIndex(n.getIndex() + right), 1));
-                    System.out.print("Rechts " + columnCounter + " " + rowCounter + " ");
-                    columnCounter++;
-                    actionPerformed = true;
-                }  
-            System.out.println("Node " + nodeCounter);   
-                nodeCounter++;
-        }
-
-    }    
-
-
-    private void buildGraph(){
-        
-        
+    
+    public void testExcute() {
 
         final int rowSize = 5;
         final int columnSize = 9;
@@ -152,23 +106,16 @@ public class World implements Model {
         int stellageCount = 0;
         final int maxStellages = 10;
         boolean filled = true;
-        final int nodeValue = 1;
-        final int stellageValue = 2;
-        final int sourceNode = 40;
         int counter = 0;
 
+        nodes = new ArrayList<Node>();
+        edges = new ArrayList<Edge>();
         for (int i = 0; i < rowSize; i++){
             for (int j = 0; j < columnSize; j++){
-                
-                if(counter == sourceNode){
-                        nodes.add(new Node("Source", counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
-                        System.out.println("Node" + counter + " Source" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
-                        counter++;
-                    }
-                else if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
+                if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Node" + counter, counter, true, i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
+                    nodes.add(new Node("Node" + counter, "Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
                     System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
 
@@ -176,30 +123,153 @@ public class World implements Model {
                             products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
-                    stellageCount++;
-                    
-                      
+                    stellageCount++;    
                 }
                 else{
-                    nodes.add(new Node("Node" + counter, counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+                    nodes.add(new Node("Node" + counter, "Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
                     System.out.println("Node" + counter + " Node" +" x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
                 }
                 continue;
-                }
             }
-            
-            for(Product p : products){
-                this.worldObjects.add(p); 
-            }
-
-            for(Stellage s : stellages){
-                this.worldObjects.add(s); 
-                }
-
-            for(Node n : nodes){
-                graph.addNode(n);
-            
         }
+
+        for(Product p : products){
+            this.worldObjects.add(p); 
+        }
+
+        for(Stellage s : stellages){
+            this.worldObjects.add(s); 
+        }
+
+        initGraph();
+        
+
+        Graph graph = new Graph(nodes, edges);
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+        dijkstra.execute(nodes.get(0));
+        LinkedList<Node> path = dijkstra.getPath(nodes.get(8));
+       
+
+        
+        for (Node vertex : path) {
+            System.out.println(vertex);
+        }
+
     }
+    private void addLane(String laneId, int sourceLocNo, int destLocNo,int duration) {
+        Edge lane = new Edge(laneId,nodes.get(sourceLocNo), nodes.get(destLocNo), duration );
+        edges.add(lane);
+
+        Edge lane1 = new Edge(laneId,nodes.get(destLocNo), nodes.get(sourceLocNo), duration );
+        edges.add(lane1);
+    }
+    
+    
+    
+    public void initGraph(){
+
+
+        int columnCounter = 1;
+        int rowCounter = 1;
+        int nodeCounter= 0;
+        final int down = 9;
+        final int right = 1;
+
+        for(Node n: nodes){   
+            
+            boolean actionPerformed = false;
+
+            if((columnCounter < 9 && rowCounter < 5) && !actionPerformed){
+                addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
+                addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
+                System.out.print("Rechts & Onder " + columnCounter + " " + rowCounter + " ");
+                columnCounter++;
+                System.out.print("Updated: " + columnCounter + " " + rowCounter + " ");
+                actionPerformed = true;
+            }
+
+            if(columnCounter == 9 && rowCounter < 5 && !actionPerformed){
+                addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
+                System.out.print("Onder " + columnCounter + " " + rowCounter + " ");
+                columnCounter = 1;
+                rowCounter++;
+                actionPerformed = true;
+            }
+
+            if(rowCounter == 5 && columnCounter < 9 && !actionPerformed){
+                addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
+                System.out.print("Rechts " + columnCounter + " " + rowCounter + " ");
+                columnCounter++;
+                actionPerformed = true;
+            }  
+            System.out.println("Node " + nodeCounter);   
+                nodeCounter++;
+        }
+
+    }    
+
+
+    // private void buildGraph(){
+        
+        
+
+    //     final int rowSize = 5;
+    //     final int columnSize = 9;
+    //     final int rowSpacing = 5;
+    //     final int columnSpacing = 3;
+    //     final int offset = 5;
+    //     int stellageCount = 0;
+    //     final int maxStellages = 10;
+    //     boolean filled = true;
+    //     final int nodeValue = 1;
+    //     final int stellageValue = 2;
+    //     final int sourceNode = 40;
+    //     int counter = 0;
+
+    //     for (int i = 0; i < rowSize; i++){
+    //         for (int j = 0; j < columnSize; j++){
+                
+    //             if(counter == sourceNode){
+    //                     nodes.add(new Node("Source", counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+    //                     System.out.println("Node" + counter + " Source" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+    //                     counter++;
+    //                 }
+    //             else if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
+                
+    //                 stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
+    //                 nodes.add(new Node("Node" + counter, counter, true, i*rowSpacing + offset, j*columnSpacing + offset, stellageValue));
+    //                 System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+    //                 counter++;
+
+    //                     if(filled){
+    //                         products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount));
+    //                         System.out.println(products.get(stellageCount).getNaam());
+    //                     }  
+    //                 stellageCount++;
+                    
+                      
+    //             }
+    //             else{
+    //                 nodes.add(new Node("Node" + counter, counter, false, i*rowSpacing + offset, j*columnSpacing + offset, nodeValue));
+    //                 System.out.println("Node" + counter + " Node" +" x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
+    //                 counter++;
+    //             }
+    //             continue;
+    //             }
+    //         }
+            
+    //         for(Product p : products){
+    //             this.worldObjects.add(p); 
+    //         }
+
+    //         for(Stellage s : stellages){
+    //             this.worldObjects.add(s); 
+    //             }
+
+    //         for(Node n : nodes){
+    //             graph.addNode(n);
+            
+    //     }
+    // }
 }

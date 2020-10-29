@@ -64,15 +64,6 @@
                 scene.add(light);
 
 
-                            gltfLoader.load('models/scene.gltf', function (gltf) {
-                            tree = gltf.scene.children[0];
-                            car1.scale.set(1,1,1);                     
-                            tree.position.x = 60;
-                            tree.position.z = 40;
-                            tree.position.y = 9;
-                            scene.add(gltf.scene);
-                            animate();
-                            });
 
                             gltfLoader.load('models/warehouse.gltf', function (gltf) {
                             warehouse = gltf.scene.children[0];
