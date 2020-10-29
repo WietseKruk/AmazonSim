@@ -147,8 +147,8 @@ public class World implements Model {
 
         Graph graph = new Graph(nodes, edges);
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
-        dijkstra.execute(nodes.get(0));
-        LinkedList<Node> path = dijkstra.getPath(nodes.get(8));
+        dijkstra.execute(nodes.get(12));
+        LinkedList<Node> path = dijkstra.getPath(nodes.get(40));
        
 
         
