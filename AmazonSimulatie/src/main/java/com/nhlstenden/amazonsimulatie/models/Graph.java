@@ -20,19 +20,35 @@ public class Graph {
         return edges;
     }
 
-    List<Node> nodes = new ArrayList<>();
 
-    public void addNode(Node node){
-        nodes.add(node);
-    }
+    // public void addNode(Node node){
+    //     vertexes.add(node);
+    // }
 
-    public Node getNodeByName(String name){
+    public Node getNodeById(String id){
         Node result = null;
-        for (Node n : nodes){
-            if (n.getName().equals(name)){
+        int attempt = 1;
+        for (Node n : vertexes){
+            if (n.getId().equals(id)){
                 result = n;
+                System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
+                attempt++;
+            }
+            else{
+                
+                //System.out.println("-Can't find Node with name: " + id + " CURRENT: " + n.getId() + " -ATTEMPT: " + attempt);
+                attempt++;
             }
         }
+        
         return result;
+    }
+
+
+    //debug
+    public void printAllNodes(){
+        for(Node n : vertexes){
+            System.out.println("NODE: " + n.getId() + " X: " + n.getX() + " Z: " + n.getZ());
+        }
     }
 }

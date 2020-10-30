@@ -4,6 +4,7 @@ import java.util.UUID;
 // import com.nhlstenden.amazonsimulatie.graph.*;
 
 import java.util.List;
+import java.util.*;
 
 
 /*
@@ -21,18 +22,25 @@ class Robot implements Object3D, Updatable {
     private double rotationX = 0;
     private double rotationY = 0;
     private double rotationZ = 0;
-    // private Graph graph;
+    private Graph graph;
     private List<Node> nodes;
     private double speed = 0.5;
     // private String node = "Node40";
     private int counter = 0;
+    DijkstraAlgorithm dijkstra; 
+
+    private LinkedList<Node> path;    
 
     public Robot(Graph graph) {
         this.uuid = UUID.randomUUID();
-        // this.graph = graph; 
-        // x = graph.getNodeByName(node).getX();
-        // z = graph.getNodeByName(node).getZ();
-        
+        this.graph = graph; 
+        //this.graph.printAllNodes();
+        dijkstra = new DijkstraAlgorithm(this.graph);
+        dijkstra.execute(this.graph.getNodeById("Node0"));
+        path = dijkstra.getPath(this.graph.getNodeById("Node40"));
+        x = this.graph.getNodeById("Node0").getX();
+        z = this.graph.getNodeById("Node0").getZ();
+
     }
 
     /*
@@ -50,43 +58,26 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-
-        //update x coordinaat
-        if (x != nodes.get(counter).getX()) {
-            if(x < nodes.get(counter).getX()){
-                x += speed;
+        if (path.size() > 1){
+            if (x == path.getFirst().getX() && z == path.getFirst().getZ()){
+                path.remove(path.getFirst());
+                x = path.getFirst().getX();
+                z = path.getFirst().getZ();
+                System.out.println("Moving to Node:" + path.getFirst().getId());
+                return true;
             }
             else{
-                x -= speed;
+                return false; 
             }
-        }
-        //update z coordinaat
-        else if(z != nodes.get(counter).getZ()){
-            if(z < nodes.get(counter).getZ()){
-                z += speed;
-            }
-            else{
-                z -= speed;
-            }
-        }
-
-        //als de node is bereikt, nodeCounter omhoog(ga naar volgende node)
-        if(x == nodes.get(counter).getX() && z == nodes.get(counter).getZ()){
-            counter++;
-        }
-
-        //reset
-        // if (x == graph.getNodeByName("Source").getX() && z == graph.getNodeByName("Source").getZ()){
-        //     nodeCounter = 0;
-        //     x = nodes.get(0).getX();
-        //     z = nodes.get(0).getZ();
-        // }
-        if (x == nodes.get(nodes.size()-1).getX() && z == nodes.get(nodes.size()-1).getZ()){
-            counter = 0;
-            x = nodes.get(0).getX();
-            z = nodes.get(0).getZ();
-        }
-        return true;
+         }
+         else{
+             System.out.println("Destination reached");
+             x = graph.getNodeById("Node0").getX();
+             z = graph.getNodeById("Node0").getZ();
+             dijkstra.execute(graph.getNodeById("Node0"));
+            path = dijkstra.getPath(graph.getNodeById("Node40"));
+             return true;
+         }
     }
 
     @Override

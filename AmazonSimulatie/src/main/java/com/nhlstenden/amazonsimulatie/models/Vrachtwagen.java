@@ -19,13 +19,15 @@ public class Vrachtwagen implements Object3D, Updatable{
     private final double source = -35;
     private final double end = -100;
 
+    private World world;
+
     //Order variables
 
-    public Vrachtwagen(int productCounter){
+    public Vrachtwagen(int productCounter, World world){
         this.uuid =UUID.randomUUID();
         this.productCounter = productCounter;
         x = 10;
-
+        this.world = world;
     }
 
 

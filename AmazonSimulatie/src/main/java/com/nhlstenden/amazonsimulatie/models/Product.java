@@ -21,12 +21,14 @@ public class Product implements Object3D, Updatable {
     private double rotationZ = 0;
 
     private boolean pickedUp;
+    private String destination;
 
-    public Product(double x, double z, String naam) {
+    public Product(double x, double z, String naam, String destination) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.naam = naam;
+        this.destination = destination;
     }
 
     public String getNaam(){
@@ -36,6 +38,11 @@ public class Product implements Object3D, Updatable {
     public void setNaam(String naam){
         this.naam = naam;
     }
+
+    public String getDestination(){
+        return destination;
+    }
+
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze

@@ -1,26 +1,21 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 public class Node {
-    final private String id;
-    final private String name;
+    private String id;
     private int x;
     private int z;
     private boolean isStellage;
 
 
-    public Node(String id, String name, int x, int z, boolean isStellage) {
+    public Node(String id, int x, int z, boolean isStellage) {
         this.id = id;
-        this.name = name;
         this.x = x;
         this.z = z;
         this.isStellage = isStellage;
     }
+
     public String getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean isStellage(){
@@ -62,6 +57,6 @@ public class Node {
 
     @Override
     public String toString() {
-        return name;
+        return id;
     }
 }

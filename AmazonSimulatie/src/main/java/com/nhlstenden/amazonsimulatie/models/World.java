@@ -32,7 +32,10 @@ public class World implements Model {
     private List<Edge> edges;
     List<Product> products = new ArrayList<>();
     List<Stellage> stellages = new ArrayList<>();
-    private Graph graph;
+    Graph graph;
+    private Robot robot1;
+    private Robot robot2;
+    private Vrachtwagen vrachtwagen;
     // List<Node> nodes = new ArrayList<>();
 
     /*
@@ -44,10 +47,14 @@ public class World implements Model {
         this.worldObjects = new ArrayList<>();
         // buildGraph();
         // initGraph();
-        this.worldObjects.add(new Robot(graph));
-        this.worldObjects.add(new Robot(graph));
-        this.worldObjects.add(new Vrachtwagen(10));
         testExcute();
+        robot1 = new Robot(graph);
+        robot2 = new Robot(graph);
+        vrachtwagen = new Vrachtwagen(10, this);
+        this.worldObjects.add(robot1);
+        this.worldObjects.add(robot2);
+        this.worldObjects.add(vrachtwagen);
+        
         };
         
     
@@ -115,18 +122,18 @@ public class World implements Model {
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
                     stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
-                    nodes.add(new Node("Node" + counter, "Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
+                    nodes.add(new Node("Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
                     System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
 
                         if(filled){
-                            products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount));
+                            products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount, "Node40"));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
                     stellageCount++;    
                 }
                 else{
-                    nodes.add(new Node("Node" + counter, "Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
+                    nodes.add(new Node("Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
                     System.out.println("Node" + counter + " Node" +" x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
                 }
@@ -145,16 +152,16 @@ public class World implements Model {
         initGraph();
         
 
-        Graph graph = new Graph(nodes, edges);
-        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
-        dijkstra.execute(nodes.get(12));
-        LinkedList<Node> path = dijkstra.getPath(nodes.get(40));
+        graph = new Graph(nodes, edges);
+        // DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+        // dijkstra.execute(nodes.get(0));
+        // LinkedList<Node> path = dijkstra.getPath(nodes.get(33));
        
 
         
-        for (Node vertex : path) {
-            System.out.println(vertex);
-        }
+        // for (Node vertex : path) {
+        //     System.out.println(vertex);
+        // }
 
     }
     private void addLane(String laneId, int sourceLocNo, int destLocNo,int duration) {
@@ -181,17 +188,43 @@ public class World implements Model {
             boolean actionPerformed = false;
 
             if((columnCounter < 9 && rowCounter < 5) && !actionPerformed){
-                addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
-                addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
-                System.out.print("Rechts & Onder " + columnCounter + " " + rowCounter + " ");
+                if(columnCounter % 2 == 0 && (rowCounter == 1 || rowCounter == 3)){
+                    addLane(n.getId(), nodeCounter, nodeCounter + right, 4);
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
+                    System.out.print("Rechts " +  4 + " Onder " + 1 + " ");
+                }
+                if ((rowCounter == 1 || rowCounter == 3) && columnCounter % 2 != 0){
+                    addLane(n.getId(), nodeCounter, nodeCounter + right, 4);
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 4);
+                    System.out.print("Rechts " +  4 + " Onder " + 4 + " ");
+                }
+                if (rowCounter == 2 && columnCounter % 2 != 0){
+                    addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 4);
+                    System.out.print("Rechts " +  1 + " Onder " + 4 + " ");
+                }
+                else {
+                    addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
+                    System.out.print("Rechts " +  1 + " Onder " + 1 + " ");
+                }
+                //System.out.print("Rechts & Onder " + columnCounter + " " + rowCounter + " ");
                 columnCounter++;
-                System.out.print("Updated: " + columnCounter + " " + rowCounter + " ");
+                //System.out.print("Updated: " + columnCounter + " " + rowCounter + " ");
                 actionPerformed = true;
             }
 
             if(columnCounter == 9 && rowCounter < 5 && !actionPerformed){
-                addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
-                System.out.print("Onder " + columnCounter + " " + rowCounter + " ");
+                if (rowCounter < 4){
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 4);
+                    System.out.print("Onder " + 4 + " ");
+                }
+                else{
+                    addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
+                    System.out.print("Onder " + 1 + " ");
+                }
+                
+                //System.out.print("Onder " + columnCounter + " " + rowCounter + " ");
                 columnCounter = 1;
                 rowCounter++;
                 actionPerformed = true;
@@ -199,15 +232,16 @@ public class World implements Model {
 
             if(rowCounter == 5 && columnCounter < 9 && !actionPerformed){
                 addLane(n.getId(), nodeCounter, nodeCounter + right, 1);
-                System.out.print("Rechts " + columnCounter + " " + rowCounter + " ");
+                System.out.print("Rechts " + 1 + " ");
+                //System.out.print("Rechts " + columnCounter + " " + rowCounter + " ");
                 columnCounter++;
                 actionPerformed = true;
             }  
             System.out.println("Node " + nodeCounter);   
                 nodeCounter++;
         }
-
     }    
+
 
 
     // private void buildGraph(){
