@@ -78,8 +78,10 @@ public class World implements Model {
         for(Product p : products){
             if(p.getNodeName().equals(nodename)){
                 System.out.println("Robot succesfully assigned " + p.getNaam());
-                robot.setProduct(p);
+                System.out.println("Robot destination: " + p.getNodeName());
                 robot.setDestination(p.getNodeName());
+                robot.setProduct(p);
+                
                 
             }
             else{

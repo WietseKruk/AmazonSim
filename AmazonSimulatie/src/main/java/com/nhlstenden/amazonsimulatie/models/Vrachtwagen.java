@@ -22,6 +22,7 @@ public class Vrachtwagen implements Object3D, Updatable{
 
     private List<Stellage> stellages;
 
+    private int stellageCount = 0;
     private World world;
 
     public Vrachtwagen(int productCounter, World world, List<Stellage> stellages){
@@ -67,10 +68,11 @@ public class Vrachtwagen implements Object3D, Updatable{
     @Override
     public boolean update() {
         
-        if(world.isRobotAvailable()){
-                //world.commandRobot(getPossibleDestinations().get(0));
-                world.commandRobot("Node0");
-                System.out.println("Vrachtwagen commanded robot at Node0");
+        if(world.isRobotAvailable() && stellageCount < 9){
+                world.commandRobot(getPossibleDestinations().get(stellageCount));
+                //world.commandRobot("Node0");
+                System.out.println("Vrachtwagen commanded robot at Node: " + getPossibleDestinations().get(stellageCount) + " - stellageCount:" + stellageCount);
+                stellageCount++;
                 return true;
         }
         

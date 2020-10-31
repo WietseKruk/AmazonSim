@@ -31,6 +31,8 @@ class Robot implements Object3D, Updatable {
     DijkstraAlgorithm dijkstra; 
     private Product currentProduct = null;
 
+    private boolean hasPath = false;
+
     private LinkedList<Node> path;    
 
     public Robot(Graph graph) {
@@ -38,15 +40,16 @@ class Robot implements Object3D, Updatable {
         this.graph = graph; 
         //this.graph.printAllNodes();
         dijkstra = new DijkstraAlgorithm(this.graph);
-        dijkstra.execute(this.graph.getNodeById("Node0"));
-        path = dijkstra.getPath(this.graph.getNodeById("Node40"));
-        x = this.graph.getNodeById("Node0").getX();
-        z = this.graph.getNodeById("Node0").getZ();
+        //dijkstra.execute(this.graph.getNodeById("Node0"));
+        //path = dijkstra.getPath(this.graph.getNodeById("Node40"));
+        x = this.graph.getNodeById("Node40").getX();
+        z = this.graph.getNodeById("Node40").getZ();
 
     }
 
     public void setDestination(String destination){
         this.destination = destination;
+        System.out.println(this.destination);
     }
 
     public String getDestination(){
@@ -55,7 +58,7 @@ class Robot implements Object3D, Updatable {
 
     public void setProduct(Product product){
         this.currentProduct = product;
-        System.out.println(currentProduct.getNaam() + "set");
+        System.out.println(currentProduct.getNaam() + " set successfully");
     }
 
     /*
@@ -73,22 +76,44 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-
-       
-            
-            if (path.size() > 1){
+          if(destination != "" && !hasPath){
+            dijkstra.execute(this.graph.getNodeById("Node40"));
+            path = dijkstra.getPath(this.graph.getNodeById(destination));    
+            System.out.println("destination: " + destination);
+            hasPath = true;
+            return true;
+            }
+            else if (hasPath){
                 
-                if (x == path.getFirst().getX() && z == path.getFirst().getZ()){
+                if (x == path.getFirst().getX() && z == path.getFirst().getZ() && path.size() > 0){
+
                     path.remove(path.getFirst());
                     x = path.getFirst().getX();
                     z = path.getFirst().getZ();
                     System.out.println("Moving to Node:" + path.getFirst().getId());
+
+                   
+
                     if (currentProduct != null){
+
                             currentProduct.setX(x);
                             currentProduct.setY(-1.25);
                             currentProduct.setZ(z);
-                            System.out.println(currentProduct.getNaam() + " picked up at " + currentProduct.getX() + " " + currentProduct.getZ());
-                    } 
+                            System.out.println(currentProduct.getNaam() + " being carried at " + currentProduct.getX() + " " + currentProduct.getZ());
+                    }  
+                    if(path.size() == 1){
+                        System.out.println("Destination reached");
+                        currentProduct.setY(0);
+                        path = null;
+                        hasPath = false;
+                        currentProduct = null;
+                        destination = "";
+                        x = graph.getNodeById("Node40").getX();
+                        z = graph.getNodeById("Node40").getZ();
+                        return true;
+                        
+                    }
+                    return true;
                 } 
                 else{
                     return false; 
@@ -96,15 +121,13 @@ class Robot implements Object3D, Updatable {
          }
          else{
              System.out.println("Destination reached");
-             x = graph.getNodeById("Node0").getX();
-             z = graph.getNodeById("Node0").getZ();
-             dijkstra.execute(graph.getNodeById("Node0"));
-            path = dijkstra.getPath(graph.getNodeById("Node40"));
+             hasPath = false;
+             x = graph.getNodeById("Node40").getX();
+             z = graph.getNodeById("Node40").getZ();
+             //dijkstra.execute(graph.getNodeById("Node0"));
+            //path = dijkstra.getPath(graph.getNodeById("Node40"));
              return true;
          }
-        
-        return true;
-
         
     }
 
