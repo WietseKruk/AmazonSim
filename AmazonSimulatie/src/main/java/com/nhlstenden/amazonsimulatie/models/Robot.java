@@ -27,7 +27,9 @@ class Robot implements Object3D, Updatable {
     private double speed = 0.5;
     // private String node = "Node40";
     private int counter = 0;
+    private String destination = "";
     DijkstraAlgorithm dijkstra; 
+    private Product currentProduct = null;
 
     private LinkedList<Node> path;    
 
@@ -41,6 +43,19 @@ class Robot implements Object3D, Updatable {
         x = this.graph.getNodeById("Node0").getX();
         z = this.graph.getNodeById("Node0").getZ();
 
+    }
+
+    public void setDestination(String destination){
+        this.destination = destination;
+    }
+
+    public String getDestination(){
+        return destination;
+    }
+
+    public void setProduct(Product product){
+        this.currentProduct = product;
+        System.out.println(currentProduct.getNaam() + "set");
     }
 
     /*
@@ -58,17 +73,26 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if (path.size() > 1){
-            if (x == path.getFirst().getX() && z == path.getFirst().getZ()){
-                path.remove(path.getFirst());
-                x = path.getFirst().getX();
-                z = path.getFirst().getZ();
-                System.out.println("Moving to Node:" + path.getFirst().getId());
-                return true;
-            }
-            else{
-                return false; 
-            }
+
+       
+            
+            if (path.size() > 1){
+                
+                if (x == path.getFirst().getX() && z == path.getFirst().getZ()){
+                    path.remove(path.getFirst());
+                    x = path.getFirst().getX();
+                    z = path.getFirst().getZ();
+                    System.out.println("Moving to Node:" + path.getFirst().getId());
+                    if (currentProduct != null){
+                            currentProduct.setX(x);
+                            currentProduct.setY(-1.25);
+                            currentProduct.setZ(z);
+                            System.out.println(currentProduct.getNaam() + " picked up at " + currentProduct.getX() + " " + currentProduct.getZ());
+                    } 
+                } 
+                else{
+                    return false; 
+                }
          }
          else{
              System.out.println("Destination reached");
@@ -78,6 +102,10 @@ class Robot implements Object3D, Updatable {
             path = dijkstra.getPath(graph.getNodeById("Node40"));
              return true;
          }
+        
+        return true;
+
+        
     }
 
     @Override

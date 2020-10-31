@@ -21,15 +21,20 @@ public class Stellage implements Object3D, Updatable {
     private double rotationZ = 0;
 
     private boolean filled;
-
+    private String node;
     
 
-    public Stellage(double x, double z, String naam, boolean filled) {
+    public Stellage(double x, double z, String naam, boolean filled, String node) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.naam = naam;
+        this.node = node;
         this.filled = filled;
+    }
+
+    public String getNodeName(){
+        return node;
     }
 
     public String getNaam(){

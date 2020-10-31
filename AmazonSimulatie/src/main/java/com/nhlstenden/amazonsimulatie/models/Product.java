@@ -21,14 +21,14 @@ public class Product implements Object3D, Updatable {
     private double rotationZ = 0;
 
     private boolean pickedUp;
-    private String destination;
+    private String nodeName;
 
-    public Product(double x, double z, String naam, String destination) {
+    public Product(double x, double z, String naam, String nodeName) {
         this.uuid = UUID.randomUUID();
         this.x = x;
         this.z = z;
         this.naam = naam;
-        this.destination = destination;
+        this.nodeName = nodeName;
     }
 
     public String getNaam(){
@@ -39,8 +39,8 @@ public class Product implements Object3D, Updatable {
         this.naam = naam;
     }
 
-    public String getDestination(){
-        return destination;
+    public String getNodeName(){
+        return nodeName;
     }
 
     /*
@@ -89,6 +89,18 @@ public class Product implements Object3D, Updatable {
 
     public void setPickedUp(boolean pickedUp){
         this.pickedUp = pickedUp;
+    }
+
+    public void setX(double x){
+        this.x = x;
+    }
+
+    public void setY(double y){
+        this.y = y;
+    }
+
+    public void setZ(double z){
+        this.z = z;
     }
 
     @Override

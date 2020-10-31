@@ -50,15 +50,43 @@ public class World implements Model {
         testExcute();
         robot1 = new Robot(graph);
         robot2 = new Robot(graph);
-        vrachtwagen = new Vrachtwagen(10, this);
+        vrachtwagen = new Vrachtwagen(10, this, stellages);
         this.worldObjects.add(robot1);
-        this.worldObjects.add(robot2);
+        //this.worldObjects.add(robot2);
         this.worldObjects.add(vrachtwagen);
         
         };
         
-    
+    public boolean isRobotAvailable(){
+       if(robot1.getDestination().isEmpty()){
+           return true;
+       }
+       else{
+           return false;
+       }
+    }
 
+    public void commandRobot(String nodeName){
+        if(robot1.getDestination().isEmpty()){
+            assignStellage(robot1, nodeName);
+            robot1.setDestination(nodeName);
+            System.out.println("robot1 has no destination and will be assigned " + nodeName);
+        }
+    }
+
+    private void assignStellage(Robot robot, String nodename){
+        for(Product p : products){
+            if(p.getNodeName().equals(nodename)){
+                System.out.println("Robot succesfully assigned " + p.getNaam());
+                robot.setProduct(p);
+                robot.setDestination(p.getNodeName());
+                
+            }
+            else{
+                System.out.println("checking for " + nodename + " at " + p.getNodeName());
+            }
+        }
+    }
     /*
      * Deze methode wordt gebruikt om de wereld te updaten. Wanneer deze methode wordt aangeroepen,
      * wordt op elk object in de wereld de methode update aangeroepen. Wanneer deze true teruggeeft
@@ -121,13 +149,13 @@ public class World implements Model {
             for (int j = 0; j < columnSize; j++){
                 if (i % 2 == 0 && j % 2 == 0 && stellageCount < maxStellages){
                 
-                    stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled));
+                    stellages.add(new Stellage(i * rowSpacing + offset, j * columnSpacing + offset, "stellage" + stellageCount, filled, "Node" + counter));
                     nodes.add(new Node("Node" + counter, i*rowSpacing + offset, j*columnSpacing + offset, false));
                     System.out.println("Node" + counter + " Stellage" + " x: " + (i*rowSpacing + offset) + " z: " + (j*columnSpacing + offset));
                     counter++;
 
                         if(filled){
-                            products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount, "Node40"));
+                            products.add(new Product(i*rowSpacing + offset,j*columnSpacing + offset, "product" + stellageCount, "Node" + (counter - 1)));
                             System.out.println(products.get(stellageCount).getNaam());
                         }  
                     stellageCount++;    
