@@ -31,7 +31,7 @@ public class Graph {
         for (Node n : vertexes){
             if (n.getId().equals(id)){
                 result = n;
-                System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
+                //System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
                 attempt++;
             }
             else{

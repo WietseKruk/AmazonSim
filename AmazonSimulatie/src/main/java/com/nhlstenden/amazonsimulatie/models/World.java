@@ -48,17 +48,20 @@ public class World implements Model {
         // buildGraph();
         // initGraph();
         testExcute();
-        robot1 = new Robot(graph);
-        robot2 = new Robot(graph);
-        vrachtwagen = new Vrachtwagen(10, this, stellages);
-        this.worldObjects.add(robot1);
-        //this.worldObjects.add(robot2);
-        this.worldObjects.add(vrachtwagen);
         
+        vrachtwagen = new Vrachtwagen(0, this, stellages);
+        robot1 = new Robot(graph, this);
+        robot2 = new Robot(graph, this);
+        this.worldObjects.add(vrachtwagen);
+        this.worldObjects.add(robot1);
+        this.worldObjects.add(robot2);
         };
         
     public boolean isRobotAvailable(){
        if(robot1.getDestination().isEmpty()){
+           return true;
+       }
+       else if(robot2.getDestination().isEmpty()){
            return true;
        }
        else{
@@ -66,28 +69,78 @@ public class World implements Model {
        }
     }
 
-    public void commandRobot(String nodeName){
+    private Robot checkWhichRobotAvailable(){
         if(robot1.getDestination().isEmpty()){
-            assignStellage(robot1, nodeName);
-            robot1.setDestination(nodeName);
-            System.out.println("robot1 has no destination and will be assigned " + nodeName);
+            return robot1;
+        }
+        else if(robot2.getDestination().isEmpty()){
+            return robot2;
+        }
+        return null;
+    }
+
+    public void addProductToTruck(){
+        if(vrachtwagen.getProductCount() < 10){
+            vrachtwagen.addProduct();
         }
     }
 
-    private void assignStellage(Robot robot, String nodename){
+    public boolean removeProductFromTruck(){
+        if(vrachtwagen.hasProducts()){
+            vrachtwagen.removeProduct();
+            return true;
+        }
+        else { return false;}
+        
+    }
+
+    public void commandRobot(String nodeName, boolean isDelivering){
+        if(isRobotAvailable()){
+            assignStellage(checkWhichRobotAvailable(), nodeName, isDelivering);
+            // robot1.setDestination(nodeName);
+            System.out.println("Robot  will be assigned " + nodeName + " and isDelivering = " + isDelivering);
+        } else{
+            System.out.println("No available robot: waiting...");
+        }
+    }
+
+    public void pickUpProduct(Robot robot, String nodeName){
+        System.out.println("pickUpProduct method entered");
         for(Product p : products){
+            if(p.getNodeName().equals(nodeName)){
+                robot.setProduct(p);
+                System.out.println("product picked up");
+            }
+        }
+    }
+
+    private void assignStellage(Robot robot, String nodename, boolean isDelivering){
+        if(!isDelivering){
+            for(Product p : products){
             if(p.getNodeName().equals(nodename)){
                 System.out.println("Robot succesfully assigned " + p.getNaam());
                 System.out.println("Robot destination: " + p.getNodeName());
-                robot.setDestination(p.getNodeName());
-                robot.setProduct(p);
-                
-                
+                robot.setIsDelivering(isDelivering);
+                robot.setDestination(p.getNodeName());           
             }
             else{
                 System.out.println("checking for " + nodename + " at " + p.getNodeName());
             }
+            }
+        } else if (isDelivering){
+            for(Product p : products){
+                if(p.getNodeName().equals(nodename)){
+                    System.out.println("Robot destination: " + p.getNodeName());
+                    robot.setIsDelivering(isDelivering);
+                    //robot.setProduct(p);
+                    robot.setDestination(p.getNodeName());           
+                }
+                else{
+                    //System.out.println("checking for " + nodename + " at " + p.getNodeName());
+                }
+                }
         }
+        
     }
     /*
      * Deze methode wordt gebruikt om de wereld te updaten. Wanneer deze methode wordt aangeroepen,
