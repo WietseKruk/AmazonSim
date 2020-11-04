@@ -84,9 +84,9 @@ public class Vrachtwagen implements Object3D, Updatable{
     if(productCounter < 10 && x == laadStationX && z == laadStationZ && !isDelivering() && world.isRobotAvailable()){
 
 	//extra check om timingsproblemen te voorkomen		
-    if(stellageTarget < 10){
-        world.commandRobot(getPossibleDestinations().get(stellageTarget), isDelivering); //isRobotDelivering moet in world meegegeven worden aan de robot zodat deze daar gebruikt kan worden in Update();  
-    }
+        if(stellageTarget < 10){
+            world.commandRobot(getPossibleDestinations().get(stellageTarget), isDelivering); //isRobotDelivering moet in world meegegeven worden aan de robot zodat deze daar gebruikt kan worden in Update();  
+        }
 	stellageTarget++;
 	System.out.println("Truck is waiting for deliveries");
 	return true;
@@ -101,7 +101,7 @@ public class Vrachtwagen implements Object3D, Updatable{
 	stellageTarget = 0;
 	//eventueel heen en weer rijden, extra
 	isDelivering = true;
-	System.out.println("stellageTarget reset");
+    System.out.println("stellageTarget reset: isDelivering = " + isDelivering);
 	return true;	
     }
 
@@ -109,8 +109,8 @@ public class Vrachtwagen implements Object3D, Updatable{
     if(productCounter > 0 && x == laadStationX && z == laadStationZ && isDelivering() && world.isRobotAvailable()){
 	world.commandRobot(getPossibleDestinations().get(stellageTarget), isDelivering);	//in commandRobot() code aanpassen gebaseerd op isRobotDelivering;
 	removeProduct();
-	stellageTarget ++;
-	
+	stellageTarget++;
+	System.out.println("Truck is unloading");
 	return true;
     }
 
@@ -137,7 +137,7 @@ public class Vrachtwagen implements Object3D, Updatable{
         //         return true;
         // }
         
-        return false;
+        return true;
 
         // if(!isDelivering() && !hasProducts() && z < end){
         //     z += speed; return true;}

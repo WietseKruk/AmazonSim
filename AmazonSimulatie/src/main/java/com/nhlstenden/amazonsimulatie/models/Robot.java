@@ -184,15 +184,22 @@ class Robot implements Object3D, Updatable {
             world.addProductToTruck();
             return true;
         }
+
+        // if(isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !isDelivering && world.checkVrachtwagenProducts() == 10){
+        //     isDelivering = true;
+        //     return true;
+        // }
+
+        
         //einde ophalen
 
         //bezorgen
         if(isAtSource() && !isCarryingProduct() && hasDestination() && !hasPath && isDelivering){
             //path = new LinkedList<Node>();
-            world.pickUpProduct(this, source);
-            world.removeProductFromTruck();
             dijkstra.execute(graph.getNodeById(source));
             path = dijkstra.getPath(graph.getNodeById(destination));
+            world.pickUpProduct(this, destination);
+            world.removeProductFromTruck();
             hasPath = true;
             System.out.println("robot has product and path and is moving to " + destination);
             return true;
@@ -201,13 +208,13 @@ class Robot implements Object3D, Updatable {
         if(!isAtDestination() && isCarryingProduct() && hasDestination() && hasPath && isDelivering){
             //move to destination and update product
 
-                   //temp
-                   System.out.println("teleporting to destination with product");
-                   x = graph.getNodeById(destination).getX();
-                   z = graph.getNodeById(destination).getZ();
-                   currentProduct.setX(x);
-                   currentProduct.setZ(z);
-                   //temp
+            //temp
+            System.out.println("teleporting to destination with product");
+            x = graph.getNodeById(destination).getX();
+            z = graph.getNodeById(destination).getZ();
+            currentProduct.setX(x);
+            currentProduct.setZ(z);
+            //temp
    
             return true;
         }

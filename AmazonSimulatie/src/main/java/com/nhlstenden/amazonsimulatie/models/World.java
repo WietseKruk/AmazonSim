@@ -79,6 +79,10 @@ public class World implements Model {
         return null;
     }
 
+    public int checkVrachtwagenProducts(){
+        return vrachtwagen.getProductCount();
+    }
+
     public void addProductToTruck(){
         if(vrachtwagen.getProductCount() < 10){
             vrachtwagen.addProduct();
@@ -105,11 +109,13 @@ public class World implements Model {
     }
 
     public void pickUpProduct(Robot robot, String nodeName){
-        System.out.println("pickUpProduct method entered");
+        System.out.println("pickUpProduct method entered with " + nodeName);
         for(Product p : products){
+            System.out.println("comparing " + p.getNodeName() + " - " + nodeName);
             if(p.getNodeName().equals(nodeName)){
                 robot.setProduct(p);
                 System.out.println("product picked up");
+                break;
             }
         }
     }
