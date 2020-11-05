@@ -220,18 +220,24 @@ class Robot implements Object3D, Updatable {
         }
 
         if(isAtDestination() && isCarryingProduct() && hasDestination() && hasPath && isDelivering){
+            world.addProductToTruck();
             currentProduct.setY(0);
             currentProduct = null;
             //destination = source;
             //path = null;
             hasPath = false;
+            
+            System.out.println("arrived at " + destination);
             return true;
         }
 
-        if(isAtDestination() && !isCarryingProduct() && !hasDestination() && !hasPath && isDelivering){
+        if(isAtDestination() && !isCarryingProduct() && hasDestination() && !hasPath && isDelivering){
             //path = new LinkedList<Node>();
+
+            System.out.println("generating new path to: " + source + " from: " + destination);
             dijkstra.execute(graph.getNodeById(destination));
             path = dijkstra.getPath(graph.getNodeById(source));
+            hasPath = true;
             return true;
         }
 
