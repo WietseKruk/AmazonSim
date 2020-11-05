@@ -136,10 +136,38 @@ class Robot implements Object3D, Updatable {
             //move to destination
 
             //temp
-            System.out.println("teleporting to destination");
-            x = graph.getNodeById(destination).getX();
-            z = graph.getNodeById(destination).getZ();
+            //System.out.println("teleporting to destination");
+            //x = graph.getNodeById(destination).getX();
+            //z = graph.getNodeById(destination).getZ();
             //temp
+                System.out.println(graph.getNodeById(destination).getX());
+                System.out.println(graph.getNodeById(destination).getZ());
+                    System.out.println(path.getFirst().getX());
+                    System.out.println(path.getFirst().getZ());
+                    System.out.println(path);
+                    
+                    if(this.x < path.getFirst().getX()){
+                        this.x += speed;
+                        System.out.println("dit is x -----------------" + x);
+                    }
+                    if(this.x >  path.getFirst().getX()){
+                        this.x -= speed;
+                        System.out.println("dit is x -----------------" + x);
+                    }
+                    if(this.z < path.getFirst().getZ()){
+                        this.z += speed;
+                        System.out.println("dit is z -----------------" + z);
+                    }
+                    if(this.z >  path.getFirst().getZ()){
+                        this.z -= speed;
+                        System.out.println("dit is z -----------------" + z);
+                    }
+                    if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
+                        path.remove(path.getFirst());
+            
+                    }
+
+
 
             return true;
         }
@@ -165,12 +193,37 @@ class Robot implements Object3D, Updatable {
             //move to source and update product
 
                 //temp
-                System.out.println("teleporting to source");
-                x = graph.getNodeById(source).getX();
-                z = graph.getNodeById(source).getZ();
-                currentProduct.setX(graph.getNodeById(source).getX());
-                currentProduct.setZ(graph.getNodeById(source).getZ());
+                //System.out.println("teleporting to source");
+                //x = graph.getNodeById(source).getX();
+                //z = graph.getNodeById(source).getZ();
+                //currentProduct.setX(graph.getNodeById(source).getX());
+                //currentProduct.setZ(graph.getNodeById(source).getZ());
                 //temp
+
+
+
+                if(this.x < path.getFirst().getX()){
+                    this.x += speed;
+                    System.out.println("dit is x -----------------" + x);
+                }
+                if(this.x >  path.getFirst().getX()){
+                    this.x -= speed;
+                    System.out.println("dit is x -----------------" + x);
+                }
+                if(this.z < path.getFirst().getZ()){
+                    this.z += speed;
+                    System.out.println("dit is z -----------------" + z);
+                }
+                if(this.z >  path.getFirst().getZ()){
+                    this.z -= speed;
+                    System.out.println("dit is z -----------------" + z);
+                }
+                if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
+                    path.remove(path.getFirst());
+        
+                }
+                currentProduct.setX(x);
+                currentProduct.setZ(z);
 
             return true;
         }
@@ -209,12 +262,33 @@ class Robot implements Object3D, Updatable {
             //move to destination and update product
 
             //temp
-            System.out.println("teleporting to destination with product");
-            x = graph.getNodeById(destination).getX();
-            z = graph.getNodeById(destination).getZ();
+            //System.out.println("teleporting to destination with product");
+            //x = graph.getNodeById(destination).getX();
+            //z = graph.getNodeById(destination).getZ();
             currentProduct.setX(x);
             currentProduct.setZ(z);
             //temp
+
+            if(this.x < path.getFirst().getX()){
+                this.x += speed;
+                System.out.println("dit is x -----------------" + x);
+            }
+            if(this.x >  path.getFirst().getX()){
+                this.x -= speed;
+                System.out.println("dit is x -----------------" + x);
+            }
+            if(this.z < path.getFirst().getZ()){
+                this.z += speed;
+                System.out.println("dit is z -----------------" + z);
+            }
+            if(this.z >  path.getFirst().getZ()){
+                this.z -= speed;
+                System.out.println("dit is z -----------------" + z);
+            }
+            if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
+                path.remove(path.getFirst());
+    
+            }
    
             return true;
         }
@@ -246,9 +320,30 @@ class Robot implements Object3D, Updatable {
 
             //temp
             System.out.println("teleporting to source");
-            x = graph.getNodeById(source).getX();
-            z = graph.getNodeById(source).getZ();
+            //x = graph.getNodeById(source).getX();
+            //z = graph.getNodeById(source).getZ();
             //temp
+
+            if(this.x < path.getFirst().getX()){
+                this.x += speed;
+                System.out.println("dit is x -----------------" + x);
+            }
+            if(this.x >  path.getFirst().getX()){
+                this.x -= speed;
+                System.out.println("dit is x -----------------" + x);
+            }
+            if(this.z < path.getFirst().getZ()){
+                this.z += speed;
+                System.out.println("dit is z -----------------" + z);
+            }
+            if(this.z >  path.getFirst().getZ()){
+                this.z -= speed;
+                System.out.println("dit is z -----------------" + z);
+            }
+            if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
+                path.remove(path.getFirst());
+    
+            }
 
             return true;
         }
@@ -390,6 +485,7 @@ class Robot implements Object3D, Updatable {
     public String getUUID() {
         return this.uuid.toString();
     }
+
 
     @Override
     public String getType() {
