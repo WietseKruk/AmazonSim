@@ -70,11 +70,12 @@ public class Vrachtwagen implements Object3D, Updatable{
 
     public void removeProduct(){
         productCounter--;
+        System.out.println("ProductCounter: " + productCounter);
     }
 
     public void addProduct(){
         productCounter++;
-        System.out.println(productCounter);
+        System.out.println("ProductCounter: " + productCounter);
     }
 
     @Override
@@ -123,7 +124,6 @@ public class Vrachtwagen implements Object3D, Updatable{
     //als de vrachtwagen aan het bezorgen is en deze heeft nog producten, wordt meerdere keren uitgevoerd
     if(productCounter > 0 && x == laadStationX && z == laadStationZ && isDelivering() && world.isRobotAvailable()){
 	world.commandRobot(getPossibleDestinations().get(stellageTarget), isDelivering);	//in commandRobot() code aanpassen gebaseerd op isRobotDelivering;
-	removeProduct();
 	stellageTarget++;
 	System.out.println("Truck is unloading");
 	return true;

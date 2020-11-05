@@ -89,13 +89,10 @@ public class World implements Model {
         }
     }
 
-    public boolean removeProductFromTruck(){
+    public void removeProductFromTruck(){
         if(vrachtwagen.hasProducts()){
             vrachtwagen.removeProduct();
-            return true;
-        }
-        else { return false;}
-        
+        }  
     }
 
     public void commandRobot(String nodeName, boolean isDelivering){
@@ -108,16 +105,17 @@ public class World implements Model {
         }
     }
 
-    public void pickUpProduct(Robot robot, String nodeName){
+    public boolean pickUpProduct(Robot robot, String nodeName){
         System.out.println("pickUpProduct method entered with " + nodeName);
         for(Product p : products){
             System.out.println("comparing " + p.getNodeName() + " - " + nodeName);
             if(p.getNodeName().equals(nodeName)){
                 robot.setProduct(p);
                 System.out.println("product picked up");
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     private void assignStellage(Robot robot, String nodename, boolean isDelivering){
@@ -127,7 +125,8 @@ public class World implements Model {
                 System.out.println("Robot succesfully assigned " + p.getNaam());
                 System.out.println("Robot destination: " + p.getNodeName());
                 robot.setIsDelivering(isDelivering);
-                robot.setDestination(p.getNodeName());           
+                robot.setDestination(p.getNodeName());    
+                break;       
             }
             else{
                 System.out.println("checking for " + nodename + " at " + p.getNodeName());
