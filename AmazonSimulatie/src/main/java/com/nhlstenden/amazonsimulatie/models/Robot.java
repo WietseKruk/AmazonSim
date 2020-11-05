@@ -232,7 +232,7 @@ class Robot implements Object3D, Updatable {
             destination = "";
             //path = null;
             hasPath = false;
-            currentProduct.setY(0);
+            currentProduct.setY(-10);
             currentProduct = null;
             world.addProductToTruck();
             return true;
