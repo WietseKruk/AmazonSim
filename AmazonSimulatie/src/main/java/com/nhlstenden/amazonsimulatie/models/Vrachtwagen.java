@@ -18,7 +18,7 @@ public class Vrachtwagen implements Object3D, Updatable{
     private boolean isDelivering = false;
     private final double speed = 0.5;
     private final double source = -35;
-    private final double end = -100;
+    private final double end = 100;
     private final double laadStationX = 10;
     private final double laadStationZ = -100;
     private List<Stellage> stellages;
@@ -97,12 +97,27 @@ public class Vrachtwagen implements Object3D, Updatable{
 
 
     //als de vrachtwagen aan het afhalen is en deze is nu vol. wordt maar 1 keer uitgevoerd
-    if(productCounter == 10 && x == laadStationX && z == laadStationZ && !isDelivering()){
-	stellageTarget = 0;
-	//eventueel heen en weer rijden, extra
-	isDelivering = true;
+    if(productCounter == 10 && /*x == laadStationX && z == laadStationZ && */!isDelivering()){
+	//stellageTarget = 0;
+    //eventueel heen en weer rijden, extra
+    System.out.println(" dit is de x van de vrachtwagen " + this.x);
+
+        if(this.x < end){
+            this.x +=1;
+        }
+        if(this.x == 100){
+            isDelivering = true;
+         
+
+        }
+
     System.out.println("stellageTarget reset: isDelivering = " + isDelivering);
 	return true;	
+    }
+
+    if(isDelivering == true && x != laadStationX){
+        this.x -=1;
+        stellageTarget = 0;
     }
 
     //als de vrachtwagen aan het bezorgen is en deze heeft nog producten, wordt meerdere keren uitgevoerd
