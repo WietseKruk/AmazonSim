@@ -31,9 +31,14 @@ public class Vrachtwagen implements Object3D, Updatable{
         this.uuid = UUID.randomUUID();
         this.productCounter = productCounter;
         this.stellages = stellages;
+        shuffleStellages();
         x = laadStationX;
         z = laadStationZ;
         this.world = world;
+    }
+
+    public void shuffleStellages(){
+        Collections.shuffle(stellages);
     }
 
     public List<String> getPossibleDestinations(){
@@ -132,7 +137,8 @@ public class Vrachtwagen implements Object3D, Updatable{
     //als de vrachtwagen spullen aan het afleveren is maar deze is nu leeg, wordt maar 1 keer uitgevoerd
     if(productCounter == 0 && x == laadStationX && z == laadStationZ && isDelivering()){
 	isDelivering = false;
-	stellageTarget = 0;
+    stellageTarget = 0;
+    shuffleStellages();
 	
 	return true;
     }

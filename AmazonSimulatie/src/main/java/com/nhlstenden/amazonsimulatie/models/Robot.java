@@ -125,14 +125,14 @@ class Robot implements Object3D, Updatable {
     public boolean update() {
 
         //ophalen
-        if(isAtSource() && !isCarryingProduct() && hasDestination() && !hasPath && !isDelivering){
+        if(isAtSource() && !isCarryingProduct() && hasDestination() && !hasPath && !getIsDelivering()){
             dijkstra.execute(graph.getNodeById(source));
             path = dijkstra.getPath(graph.getNodeById(destination));
             hasPath = true;
             return true;
         }
 
-        if(!isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !isDelivering){
+        if(!isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             //move to destination
 
             //temp
@@ -172,7 +172,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !isDelivering){
+        if(isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             world.pickUpProduct(this, destination);
             //destination = source;
             //path = null;
@@ -181,7 +181,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtDestination() && isCarryingProduct() && hasDestination() && !hasPath && !isDelivering){
+        if(isAtDestination() && isCarryingProduct() && hasDestination() && !hasPath && !getIsDelivering()){
             //path = new LinkedList<Node>();
             dijkstra.execute(graph.getNodeById(destination));
             path = dijkstra.getPath(graph.getNodeById(source));
@@ -189,7 +189,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(!isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !isDelivering){
+        if(!isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             //move to source and update product
 
                 //temp
@@ -228,7 +228,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !isDelivering){
+        if(isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             destination = "";
             //path = null;
             hasPath = false;
@@ -247,7 +247,7 @@ class Robot implements Object3D, Updatable {
         //einde ophalen
 
         //bezorgen
-        if(this.isAtSource() && !this.isCarryingProduct() && this.hasDestination() && !hasPath && isDelivering){
+        if(this.isAtSource() && !this.isCarryingProduct() && this.hasDestination() && !hasPath && getIsDelivering()){
             //path = new LinkedList<Node>();
             
             if(world.pickUpProduct(this, destination)){
@@ -263,7 +263,7 @@ class Robot implements Object3D, Updatable {
             
         }
 
-        if(!isAtDestination() && isCarryingProduct() && hasDestination() && hasPath && isDelivering){
+        if(!isAtDestination() && isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
             //move to destination and update product
 
             //temp
@@ -298,7 +298,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtDestination() && this.isCarryingProduct() && hasDestination() && hasPath && isDelivering){
+        if(isAtDestination() && this.isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
             
             //world.addProductToTruck();
             currentProduct.setY(0);
@@ -311,7 +311,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtDestination() && !isCarryingProduct() && hasDestination() && !hasPath && isDelivering){
+        if(isAtDestination() && !isCarryingProduct() && hasDestination() && !hasPath && getIsDelivering()){
             //path = new LinkedList<Node>();
 
             System.out.println("generating new path to: " + source + " from: " + destination);
@@ -321,7 +321,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(!isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && isDelivering){
+        if(!isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
             //move to source
 
             //temp
@@ -354,7 +354,7 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && isDelivering){
+        if(isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
             destination = "";
             //path = null;
             hasPath = false;
