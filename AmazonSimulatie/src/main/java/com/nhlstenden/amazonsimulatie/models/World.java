@@ -3,7 +3,6 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -35,46 +34,101 @@ public class World implements Model {
     Graph graph;
     private Robot robot1;
     private Robot robot2;
+    private Robot robot3;
+    private Robot robot4;
+    private Robot robot5;
+    private Robot robot6;
+    private Robot robot7;
+    private Robot robot8;
+    private Robot robot9;
+    private Robot robot10;
+    private Robot robot11;
+    private Robot robot12;
+    private Robot robot13;
+    private Robot robot14;
+    private Robot robot15;
+    private Robot robot16;
+    private Robot robot17;
+    private Robot robot18;
+    private Robot robot19;
+    private Robot robot20;
+    
     private Vrachtwagen vrachtwagen;
-    // List<Node> nodes = new ArrayList<>();
+    private List<Robot> robots = new ArrayList<Robot>();
 
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
      */
     public World() {
-        // graph = new Graph(); 
         this.worldObjects = new ArrayList<>();
-        // buildGraph();
-        // initGraph();
-        testExcute();
-        
+        buildNodes();
+        initGraph();
+        graph = new Graph(nodes, edges);
         vrachtwagen = new Vrachtwagen(0, this, stellages);
-        robot1 = new Robot(graph, this);
-        robot2 = new Robot(graph, this);
+        robots.add(robot1 = new Robot(graph, this));
+        robots.add(robot2 = new Robot(graph, this));
+        robots.add(robot3 = new Robot(graph, this));
+        robots.add(robot4 = new Robot(graph, this));
+        robots.add(robot5 = new Robot(graph, this));
+        robots.add(robot6 = new Robot(graph, this));
+        robots.add(robot7 = new Robot(graph, this));
+        robots.add(robot8 = new Robot(graph, this));
+        robots.add(robot9 = new Robot(graph, this));
+        robots.add(robot10 = new Robot(graph, this));
+        robots.add(robot11 = new Robot(graph, this));
+        robots.add(robot12 = new Robot(graph, this));
+        robots.add(robot13 = new Robot(graph, this));
+        robots.add(robot14 = new Robot(graph, this));
+        robots.add(robot15 = new Robot(graph, this));
+        robots.add(robot16 = new Robot(graph, this));
+        robots.add(robot17 = new Robot(graph, this));
+        robots.add(robot18 = new Robot(graph, this));
+        robots.add(robot19 = new Robot(graph, this));
+        robots.add(robot20 = new Robot(graph, this));
         this.worldObjects.add(vrachtwagen);
-        this.worldObjects.add(robot1);
-        this.worldObjects.add(robot2);
-        };
+        addStellagesToWorld();
+        addProductsToWorld();
+        addRobotsToWorld(robots);
+    };
+    
+    private void addRobotsToWorld(List<Robot> robots){
+        for (Robot r : robots){
+            this.worldObjects.add(r);
+        }
+    }
+
+    private void addStellagesToWorld(){
+        if(!stellages.isEmpty()){
+            for(Stellage s : stellages){
+                this.worldObjects.add(s); 
+            } 
+        }  
+    }
+
+    private void addProductsToWorld(){
+        if(!products.isEmpty()){
+            for(Product p : products){
+                this.worldObjects.add(p); 
+            }
+        }      
+    }
+        
         
     public boolean isRobotAvailable(){
-       if(robot1.getDestination().isEmpty()){
-           return true;
-       }
-       else if(robot2.getDestination().isEmpty()){
-           return true;
-       }
-       else{
-           return false;
-       }
+       for (Robot r : robots){
+            if(r.getDestination().isEmpty()){
+                return true;
+            }
+        }
+       return false;
     }
 
     private Robot checkWhichRobotAvailable(){
-        if(robot1.getDestination().isEmpty()){
-            return robot1;
-        }
-        else if(robot2.getDestination().isEmpty()){
-            return robot2;
+        for (Robot r : robots){
+            if(r.getDestination().isEmpty()){
+                return r;
+            }
         }
         return null;
     }
@@ -191,7 +245,7 @@ public class World implements Model {
         return returnList;
     }
     
-    public void testExcute() {
+    public void buildNodes() {
 
         final int rowSize = 5;
         final int columnSize = 9;
@@ -229,28 +283,15 @@ public class World implements Model {
             }
         }
 
-        for(Product p : products){
-            this.worldObjects.add(p); 
-        }
-
-        for(Stellage s : stellages){
-            this.worldObjects.add(s); 
-        }
-
-        initGraph();
-        
-
-        graph = new Graph(nodes, edges);
-        // DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
-        // dijkstra.execute(nodes.get(0));
-        // LinkedList<Node> path = dijkstra.getPath(nodes.get(33));
-       
-
-        
-        // for (Node vertex : path) {
-        //     System.out.println(vertex);
+        // for(Product p : products){
+        //     this.worldObjects.add(p); 
         // }
 
+        // for(Stellage s : stellages){
+        //     this.worldObjects.add(s); 
+        // }
+
+   
     }
     private void addLane(String laneId, int sourceLocNo, int destLocNo,int duration) {
         Edge lane = new Edge(laneId,nodes.get(sourceLocNo), nodes.get(destLocNo), duration );
@@ -276,12 +317,12 @@ public class World implements Model {
             boolean actionPerformed = false;
 
             if((columnCounter < 9 && rowCounter < 5) && !actionPerformed){
-                if(columnCounter % 2 == 0 && (rowCounter == 1 || rowCounter == 3)){
+                if(columnCounter % 2 == 0 && rowCounter % 2 != 0){
                     addLane(n.getId(), nodeCounter, nodeCounter + right, 4);
                     addLane(n.getId(), nodeCounter, nodeCounter + down, 1);
                     System.out.print("Rechts " +  4 + " Onder " + 1 + " ");
                 }
-                if ((rowCounter == 1 || rowCounter == 3) && columnCounter % 2 != 0){
+                if (rowCounter % 2 != 0 && columnCounter % 2 != 0){
                     addLane(n.getId(), nodeCounter, nodeCounter + right, 4);
                     addLane(n.getId(), nodeCounter, nodeCounter + down, 4);
                     System.out.print("Rechts " +  4 + " Onder " + 4 + " ");

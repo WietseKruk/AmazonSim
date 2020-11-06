@@ -15,7 +15,6 @@ import java.util.Set;
 
 public class DijkstraAlgorithm {
 
-    private final List<Node> nodes;
     private final List<Edge> edges;
     private Set<Node> settledNodes;
     private Set<Node> unSettledNodes;
@@ -23,8 +22,7 @@ public class DijkstraAlgorithm {
     private Map<Node, Integer> distance;
 
     public DijkstraAlgorithm(Graph graph) {
-        // create a copy of the array so that we can operate on this array
-        this.nodes = new ArrayList<Node>(graph.getVertexes());
+        //create a copy of the array so that we can operate on this array
         this.edges = new ArrayList<Edge>(graph.getEdges());
     }
 
@@ -56,10 +54,6 @@ public class DijkstraAlgorithm {
         }
 
     }
-
-    // private List<Node> getNodes(){
-    //     return nodes; 
-    // }
 
     private int getDistance(Node node, Node target) {
         for (Edge edge : edges) {

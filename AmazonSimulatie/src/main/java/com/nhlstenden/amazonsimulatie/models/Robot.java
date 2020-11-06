@@ -3,7 +3,6 @@ package com.nhlstenden.amazonsimulatie.models;
 import java.util.UUID;
 // import com.nhlstenden.amazonsimulatie.graph.*;
 
-import java.util.List;
 import java.util.*;
 
 
@@ -23,10 +22,10 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
     private Graph graph;
-    private List<Node> nodes;
+    //private List<Node> nodes;
     private double speed = 0.5;
     // private String node = "Node40";
-    private int counter = 0;
+    //private int counter = 0;
     private String destination = "";
     DijkstraAlgorithm dijkstra; 
     private Product currentProduct = null;
@@ -44,13 +43,9 @@ class Robot implements Object3D, Updatable {
         this.uuid = UUID.randomUUID();
         this.graph = graph; 
         this.world = world;
-        //this.graph.printAllNodes();
         dijkstra = new DijkstraAlgorithm(this.graph);
-        //dijkstra.execute(this.graph.getNodeById("Node0"));
-        //path = dijkstra.getPath(this.graph.getNodeById("Node40"));
         x = this.graph.getNodeById(source).getX();
         z = this.graph.getNodeById(source).getZ();
-
     }
 
     public void setDestination(String destination){
@@ -108,6 +103,36 @@ class Robot implements Object3D, Updatable {
         System.out.println(currentProduct.getNaam() + " set successfully");
     }
 
+    private void moveAcrossPath(){
+        if(this.x < path.getFirst().getX()){
+            this.x += speed;
+            //System.out.println("dit is x -----------------" + x);
+        }
+        if(this.x >  path.getFirst().getX()){
+            this.x -= speed;
+            //System.out.println("dit is x -----------------" + x);
+        }
+        if(this.z < path.getFirst().getZ()){
+            this.z += speed;
+            //System.out.println("dit is z -----------------" + z);
+        }
+        if(this.z >  path.getFirst().getZ()){
+            this.z -= speed;
+            //System.out.println("dit is z -----------------" + z);
+        }
+        if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
+            path.remove(path.getFirst());
+        }
+    }
+
+    private void updateProductPos(){
+        if(currentProduct != null){
+            currentProduct.setX(x);
+            currentProduct.setZ(z);
+        }
+    }
+
+
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
@@ -132,57 +157,19 @@ class Robot implements Object3D, Updatable {
             return true;
         }
 
-        if(!isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
-            //move to destination
-
-            //temp
-            //System.out.println("teleporting to destination");
-            //x = graph.getNodeById(destination).getX();
-            //z = graph.getNodeById(destination).getZ();
-            //temp
-                //System.out.println(graph.getNodeById(destination).getX());
-                //System.out.println(graph.getNodeById(destination).getZ());
-                    //System.out.println(path.getFirst().getX());
-                    //System.out.println(path.getFirst().getZ());
-                    //System.out.println(path);
-                    
-                    if(this.x < path.getFirst().getX()){
-                        this.x += speed;
-                        //System.out.println("dit is x -----------------" + x);
-                    }
-                    if(this.x >  path.getFirst().getX()){
-                        this.x -= speed;
-                        //System.out.println("dit is x -----------------" + x);
-                    }
-                    if(this.z < path.getFirst().getZ()){
-                        this.z += speed;
-                        //System.out.println("dit is z -----------------" + z);
-                    }
-                    if(this.z >  path.getFirst().getZ()){
-                        this.z -= speed;
-                        //System.out.println("dit is z -----------------" + z);
-                    }
-                    if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
-                        path.remove(path.getFirst());
-            
-                    }
-
-
-
+        if(!isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){        
+            moveAcrossPath();
             return true;
         }
 
         if(isAtDestination() && !isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             world.pickUpProduct(this, destination);
-            //destination = source;
-            //path = null;
             hasPath = false;
             System.out.println(destination);
             return true;
         }
 
         if(isAtDestination() && isCarryingProduct() && hasDestination() && !hasPath && !getIsDelivering()){
-            //path = new LinkedList<Node>();
             dijkstra.execute(graph.getNodeById(destination));
             path = dijkstra.getPath(graph.getNodeById(source));
             hasPath = true;
@@ -190,130 +177,48 @@ class Robot implements Object3D, Updatable {
         }
 
         if(!isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
-            //move to source and update product
-
-                //temp
-                //System.out.println("teleporting to source");
-                //x = graph.getNodeById(source).getX();
-                //z = graph.getNodeById(source).getZ();
-                //currentProduct.setX(graph.getNodeById(source).getX());
-                //currentProduct.setZ(graph.getNodeById(source).getZ());
-                //temp
-
-
-
-                if(this.x < path.getFirst().getX()){
-                    this.x += speed;
-                    //System.out.println("dit is x -----------------" + x);
-                }
-                if(this.x >  path.getFirst().getX()){
-                    this.x -= speed;
-                    //System.out.println("dit is x -----------------" + x);
-                }
-                if(this.z < path.getFirst().getZ()){
-                    this.z += speed;
-                    //System.out.println("dit is z -----------------" + z);
-                }
-                if(this.z >  path.getFirst().getZ()){
-                    this.z -= speed;
-                    //System.out.println("dit is z -----------------" + z);
-                }
-                if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
-                    path.remove(path.getFirst());
-        
-                }
-                currentProduct.setX(x);
-                currentProduct.setZ(z);
-
+            moveAcrossPath();
+            updateProductPos();
             return true;
         }
 
         if(isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !getIsDelivering()){
             destination = "";
-            //path = null;
             hasPath = false;
             currentProduct.setY(-10);
             currentProduct = null;
             world.addProductToTruck();
             return true;
-        }
-
-        // if(isAtSource() && isCarryingProduct() && hasDestination() && hasPath && !isDelivering && world.checkVrachtwagenProducts() == 10){
-        //     isDelivering = true;
-        //     return true;
-        // }
-
-        
+        } 
         //einde ophalen
 
         //bezorgen
         if(this.isAtSource() && !this.isCarryingProduct() && this.hasDestination() && !hasPath && getIsDelivering()){
-            //path = new LinkedList<Node>();
-            
             if(world.pickUpProduct(this, destination)){
                 world.removeProductFromTruck();
             }
-                
             dijkstra.execute(graph.getNodeById(source));
             path = dijkstra.getPath(graph.getNodeById(destination));
             hasPath = true;
             System.out.println("robot has product and path and is moving to " + destination);
             return true;
-          
-            
         }
 
         if(!isAtDestination() && isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
-            //move to destination and update product
-
-            //temp
-            //System.out.println("teleporting to destination with product");
-            //x = graph.getNodeById(destination).getX();
-            //z = graph.getNodeById(destination).getZ();
-            currentProduct.setX(x);
-            currentProduct.setZ(z);
-            //temp
-
-            if(this.x < path.getFirst().getX()){
-                this.x += speed;
-                //System.out.println("dit is x -----------------" + x);
-            }
-            if(this.x >  path.getFirst().getX()){
-                this.x -= speed;
-                //System.out.println("dit is x -----------------" + x);
-            }
-            if(this.z < path.getFirst().getZ()){
-                this.z += speed;
-                //System.out.println("dit is z -----------------" + z);
-            }
-            if(this.z >  path.getFirst().getZ()){
-                this.z -= speed;
-                //System.out.println("dit is z -----------------" + z);
-            }
-            if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
-                path.remove(path.getFirst());
-    
-            }
-   
+            moveAcrossPath();
+            updateProductPos();
             return true;
         }
 
         if(isAtDestination() && this.isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
-            
-            //world.addProductToTruck();
             currentProduct.setY(0);
             currentProduct = null;
-            //destination = source;
-            //path = null;
             hasPath = false;
-            
             System.out.println("arrived at " + destination);
             return true;
         }
 
         if(isAtDestination() && !isCarryingProduct() && hasDestination() && !hasPath && getIsDelivering()){
-            //path = new LinkedList<Node>();
-
             System.out.println("generating new path to: " + source + " from: " + destination);
             dijkstra.execute(graph.getNodeById(destination));
             path = dijkstra.getPath(graph.getNodeById(source));
@@ -322,169 +227,18 @@ class Robot implements Object3D, Updatable {
         }
 
         if(!isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
-            //move to source
-
-            //temp
-            //System.out.println("teleporting to source");
-            //x = graph.getNodeById(source).getX();
-            //z = graph.getNodeById(source).getZ();
-            //temp
-
-            if(this.x < path.getFirst().getX()){
-                this.x += speed;
-                //System.out.println("dit is x -----------------" + x);
-            }
-            if(this.x >  path.getFirst().getX()){
-                this.x -= speed;
-                //System.out.println("dit is x -----------------" + x);
-            }
-            if(this.z < path.getFirst().getZ()){
-                this.z += speed;
-                //System.out.println("dit is z -----------------" + z);
-            }
-            if(this.z >  path.getFirst().getZ()){
-                this.z -= speed;
-                //System.out.println("dit is z -----------------" + z);
-            }
-            if( this.z == path.getFirst().getZ() && this.x == path.getFirst().getX()){
-                path.remove(path.getFirst());
-    
-            }
-
+            moveAcrossPath();
             return true;
         }
 
         if(isAtSource() && !isCarryingProduct() && hasDestination() && hasPath && getIsDelivering()){
             destination = "";
-            //path = null;
             hasPath = false;
             return true;
         }
         //einde bezorgen
-        return false;
 
-
-
-
-
-
-
-        // //het creeeren van een pad als de robot een bestemming heeft binnengekregen en op de sourceNode staat
-        // if(hasDestination() && !hasPath && isAtSource()){
-        //     dijkstra.execute(graph.getNodeById(source));
-        //     path = dijkstra.getPath(graph.getNodeById(destination));
-        //     hasPath = true;
-        // }
-
-        // //bewegen naar de destination
-        // if(hasDestination() && hasPath && !isAtDestination()){
-        //     //TODO
-        //     if(isCarryingProduct()){
-
-        //     }
-        //     else{
-
-        //     }
-        // }
-
-        // //bewegen naar de source
-        // if(!hasDestination() && !hasPath && !isAtSource()){
-        //     //terugbewegen naar de source
-        // }
-
-        // //als de robot op de destination is maar niet aan het deliveren is (oftewel aan het ophalen is)
-        // if(isAtDestination() && !isDelivering){
-        //     world.pickUpProduct(this, destination);
-        //     dijkstra.execute(graph.getNodeById(destination));
-        //     path = dijkstra.getPath(graph.getNodeById(source));
-        // }
-
-        // //als de robot op de source is, aan het ophalen is en een product bij zich heeft
-        // if(isAtSource() && !isDelivering && isCarryingProduct()){
-        //     currentProduct = null; //product loskoppelen van de robot
-        //     hasPath = false;    //de robot heeft geen pad meer
-        //     destination = "";   //destination resetten hierdoor wordt de world.isRobotAvailable == true zodat hij een nieuwe destination kan ontvangen
-        //     world.addProductToTruck();  //er wordt een product toegevoegd aan de vrachtwagen
-        // }
-
-        // //als de robot een pad heeft, aan het deliveren is, een product bij zich heeft, en op de destination is
-        // if(hasPath && isDelivering && isCarryingProduct() && isAtDestination()){
-        //     currentProduct.setY(0); //product iets omhoog zodat het lijkt alsof deze op de stellage staat
-        //     currentProduct = null; //product loskoppelen van de robot
-        //     hasPath = false;    //de robot heeft nu geen pad meer
-        //     destination = "";
-        // }
-
-        // if(hasPath && !isDelivering && isCarryingProduct() && isAtDestination()){
-        //     currentProduct.setY(0); //product iets omhoog zodat het lijkt alsof deze op de stellage staat
-        //     currentProduct = null; //product loskoppelen van de robot
-        //     hasPath = false;    //de robot heeft nu geen pad meer
-        //     destination = "";
-        // }
-
-        
-
-
-
-
-
-
-
-        //   if(destination != "" && !hasPath){
-        //     dijkstra.execute(this.graph.getNodeById(source));
-
-        //     path = dijkstra.getPath(this.graph.getNodeById(destination));    
-        //     System.out.println("destination: " + destination);
-        //     hasPath = true;
-        //     return true;
-        //     }
-        //     else if (hasPath){
-                
-        //         if (x == path.getFirst().getX() && z == path.getFirst().getZ() && path.size() > 0){
-
-        //             path.remove(path.getFirst());
-        //             x = path.getFirst().getX();
-        //             z = path.getFirst().getZ();
-        //             System.out.println("Moving to Node:" + path.getFirst().getId());
-
-                   
-
-        //             if (currentProduct != null){
-
-        //                     currentProduct.setX(x);
-        //                     currentProduct.setY(-1.25);
-        //                     currentProduct.setZ(z);
-        //                     System.out.println(currentProduct.getNaam() + " being carried at " + currentProduct.getX() + " " + currentProduct.getZ());
-        //             }  
-        //             if(path.size() == 1){
-        //                 System.out.println("Destination reached");
-        //                 currentProduct.setY(0);
-        //                 source = destination;
-        //                 path = null;
-        //                 hasPath = false;
-        //                 currentProduct = null;
-        //                 destination = "";
-        //                 // x = graph.getNodeById("Node40").getX();
-        //                 // z = graph.getNodeById("Node40").getZ();
-        //                 return true;
-                        
-        //             }
-        //             return true;
-        //         } 
-        //         else{
-        //             return false; 
-        //         }
-        //  }
-        //  else{
-        //      System.out.println("Destination reached");
-        //      hasPath = false;
-        //     //  x = graph.getNodeById("Node40").getX();
-        //     //  z = graph.getNodeById("Node40").getZ();
-        //     dijkstra.execute(this.graph.getNodeById(destination));
-        //     path = dijkstra.getPath(this.graph.getNodeById("Node40"));
-        //      return true;
-        //  }
-        
+        return false;     
     }
 
     @Override

@@ -16,8 +16,7 @@ public class Vrachtwagen implements Object3D, Updatable{
 
     private int productCounter;
     private boolean isDelivering = false;
-    private final double speed = 0.5;
-    private final double source = -35;
+    private final double speed = 1;
     private final double end = 100;
     private final double laadStationX = 10;
     private final double laadStationZ = -100;
@@ -98,23 +97,15 @@ public class Vrachtwagen implements Object3D, Updatable{
 	return true;
     }
 
-    //robot rijdt naar stellageTarget, pakt stellage op, rijdt terug naar vrachtwagen, laat stellage los bij vrachtwagen vrachtwagen.productCounter++;
-    //misschien mogelijk om robot na elke opdracht automatisch terug te laten rijden naar de sourceNode?
-
-
     //als de vrachtwagen aan het afhalen is en deze is nu vol. wordt maar 1 keer uitgevoerd
     if(productCounter == 10 && /*x == laadStationX && z == laadStationZ && */!isDelivering()){
-	//stellageTarget = 0;
-    //eventueel heen en weer rijden, extra
     System.out.println(" dit is de x van de vrachtwagen " + this.x);
 
         if(this.x < end){
-            this.x +=1;
+            this.x += speed;
         }
-        if(this.x == 100){
+        if(this.x == end){
             isDelivering = true;
-         
-
         }
 
     System.out.println("stellageTarget reset: isDelivering = " + isDelivering);
@@ -122,7 +113,7 @@ public class Vrachtwagen implements Object3D, Updatable{
     }
 
     if(isDelivering == true && x != laadStationX){
-        this.x -=1;
+        this.x -= speed;
         stellageTarget = 0;
     }
 
@@ -142,49 +133,7 @@ public class Vrachtwagen implements Object3D, Updatable{
 	
 	return true;
     }
-
-
-        
-
-
-
-
-
-        // if(world.isRobotAvailable() && stellageCount < 10 && isDelivering()){
-        //         world.commandRobot(getPossibleDestinations().get(stellageCount));
-        //         //world.commandRobot("Node0");
-        //         System.out.println("Vrachtwagen commanded robot at Node: " + getPossibleDestinations().get(stellageCount) + " - stellageCount:" + stellageCount);
-        //         stellageCount++;
-        //         return true;
-        // }
-        
-        return true;
-
-        // if(!isDelivering() && !hasProducts() && z < end){
-        //     z += speed; return true;}
-        // if(!isDelivering() && productCounter < 10 && z == end){
-        //     return false;}
-        // if(!isDelivering() && productCounter == 10 && z <= end && z > source){
-        //     z -= speed;}
-        // if(!isDelivering() && productCounter == 10 && z == source){ 
-        //     setDelivering(true); 
-        //     return true;}
-    
-    
-        // if(isDelivering() && productCounter == 10 && z < end){
-        //     z += speed; 
-        //     return true;}
-        // if(isDelivering() && hasProducts() && z == end){
-        //     return false;}
-        // if(isDelivering() && !hasProducts() && z <= end && z > source){
-        //     z -= speed; 
-        //     return true;}
-        // if(isDelivering() && !hasProducts() && z == source){
-        //     setDelivering(false); 
-        //     return true;}
-        // return true;
-        
-        
+        return true;     
     }    
     
     @Override

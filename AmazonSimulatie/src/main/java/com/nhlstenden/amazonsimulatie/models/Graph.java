@@ -1,6 +1,5 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Graph {
@@ -21,23 +20,18 @@ public class Graph {
     }
 
 
-    // public void addNode(Node node){
-    //     vertexes.add(node);
-    // }
-
     public Node getNodeById(String id){
         Node result = null;
-        int attempt = 1;
+        //DEBUG: int attempt = 1;
         for (Node n : vertexes){
             if (n.getId().equals(id)){
                 result = n;
                 //System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
-                attempt++;
+                //attempt++;
             }
             else{
-                
                 //System.out.println("-Can't find Node with name: " + id + " CURRENT: " + n.getId() + " -ATTEMPT: " + attempt);
-                attempt++;
+                //attempt++;
             }
         }
         

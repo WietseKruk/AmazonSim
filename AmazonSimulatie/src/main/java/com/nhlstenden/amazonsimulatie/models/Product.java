@@ -57,13 +57,7 @@ public class Product implements Object3D, Updatable {
      * in de view)
      */
     @Override
-    public boolean update() {
-        if(isPickedUp()){
-            //this.x = x-coordinaat van robot;
-            //this.y = 0.3 iets hoger zodat het lijkt alsof hij gedragen wordt;
-            //this.z = z-coordinaat van robot;
-        }
-        
+    public boolean update() {   
         return true;
     }
 
