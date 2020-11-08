@@ -22,7 +22,7 @@ public class DijkstraAlgorithm {
     private Map<Node, Integer> distance;
 
     public DijkstraAlgorithm(Graph graph) {
-        //create a copy of the array so that we can operate on this array
+        // create a copy of the array so that we can operate on this array
         this.edges = new ArrayList<Edge>(graph.getEdges());
     }
 
@@ -44,10 +44,8 @@ public class DijkstraAlgorithm {
     private void findMinimalDistances(Node node) {
         List<Node> adjacentNodes = getNeighbors(node);
         for (Node target : adjacentNodes) {
-            if (getShortestDistance(target) > getShortestDistance(node)
-                    + getDistance(node, target)) {
-                distance.put(target, getShortestDistance(node)
-                        + getDistance(node, target));
+            if (getShortestDistance(target) > getShortestDistance(node) + getDistance(node, target)) {
+                distance.put(target, getShortestDistance(node) + getDistance(node, target));
                 predecessors.put(target, node);
                 unSettledNodes.add(target);
             }
@@ -57,8 +55,7 @@ public class DijkstraAlgorithm {
 
     private int getDistance(Node node, Node target) {
         for (Edge edge : edges) {
-            if (edge.getSource().equals(node)
-                    && edge.getDestination().equals(target)) {
+            if (edge.getSource().equals(node) && edge.getDestination().equals(target)) {
                 return edge.getWeight();
             }
         }
@@ -68,8 +65,7 @@ public class DijkstraAlgorithm {
     private List<Node> getNeighbors(Node node) {
         List<Node> neighbors = new ArrayList<Node>();
         for (Edge edge : edges) {
-            if (edge.getSource().equals(node)
-                    && !isSettled(edge.getDestination())) {
+            if (edge.getSource().equals(node) && !isSettled(edge.getDestination())) {
                 neighbors.add(edge.getDestination());
             }
         }
@@ -104,8 +100,8 @@ public class DijkstraAlgorithm {
     }
 
     /*
-     * This method returns the path from the source to the selected target and
-     * NULL if no path exists
+     * This method returns the path from the source to the selected target and NULL
+     * if no path exists
      */
     public LinkedList<Node> getPath(Node target) {
         LinkedList<Node> path = new LinkedList<Node>();

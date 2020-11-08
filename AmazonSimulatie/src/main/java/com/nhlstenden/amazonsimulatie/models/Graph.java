@@ -19,29 +19,27 @@ public class Graph {
         return edges;
     }
 
-
-    public Node getNodeById(String id){
+    public Node getNodeById(String id) {
         Node result = null;
-        //DEBUG: int attempt = 1;
-        for (Node n : vertexes){
-            if (n.getId().equals(id)){
+        // DEBUG: int attempt = 1;
+        for (Node n : vertexes) {
+            if (n.getId().equals(id)) {
                 result = n;
-                //System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
-                //attempt++;
-            }
-            else{
-                //System.out.println("-Can't find Node with name: " + id + " CURRENT: " + n.getId() + " -ATTEMPT: " + attempt);
-                //attempt++;
+                //DEBUG: System.out.println(result.getId() + " Found during ATTEMPT: " + attempt);
+                //DEBUG: attempt++;
+            } else {
+                //DEBUG: System.out.println("-Can't find Node with name: " + id + " CURRENT: " +
+                //DEBUG: n.getId() + " -ATTEMPT: " + attempt);
+                //DEBUG: attempt++;
             }
         }
-        
+
         return result;
     }
 
-
-    //debug
-    public void printAllNodes(){
-        for(Node n : vertexes){
+    // DEBUG
+    public void printAllNodes() {
+        for (Node n : vertexes) {
             System.out.println("NODE: " + n.getId() + " X: " + n.getX() + " Z: " + n.getZ());
         }
     }

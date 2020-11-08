@@ -6,7 +6,6 @@ public class Node {
     private int z;
     private boolean isStellage;
 
-
     public Node(String id, int x, int z, boolean isStellage) {
         this.id = id;
         this.x = x;
@@ -18,15 +17,15 @@ public class Node {
         return id;
     }
 
-    public boolean isStellage(){
+    public boolean isStellage() {
         return isStellage;
     }
 
-    public int getX(){
+    public int getX() {
         return x;
     }
-    
-    public int getZ(){
+
+    public int getZ() {
         return z;
     }
 

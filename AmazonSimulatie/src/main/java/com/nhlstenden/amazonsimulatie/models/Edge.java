@@ -1,6 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-public class Edge  {
+public class Edge {
     private final String id;
     private final Node source;
     private final Node destination;
@@ -16,6 +16,7 @@ public class Edge  {
     public String getId() {
         return id;
     }
+
     public Node getDestination() {
         return destination;
     }
@@ -23,6 +24,7 @@ public class Edge  {
     public Node getSource() {
         return source;
     }
+
     public int getWeight() {
         return weight;
     }
@@ -31,6 +33,5 @@ public class Edge  {
     public String toString() {
         return source + " " + destination;
     }
-
 
 }

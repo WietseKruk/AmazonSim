@@ -31,33 +31,32 @@ public class Product implements Object3D, Updatable {
         this.nodeName = nodeName;
     }
 
-    public String getNaam(){
+    public String getNaam() {
         return naam;
     }
 
-    public void setNaam(String naam){
+    public void setNaam(String naam) {
         this.naam = naam;
     }
 
-    public String getNodeName(){
+    public String getNodeName() {
         return nodeName;
     }
 
     /*
-     * Deze update methode wordt door de World aangeroepen wanneer de
-     * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
-     * robot, in de 3D wereld steeds een beetje tijd krijgt om een update
-     * uit te voeren. In de updatemethode hieronder schrijf je dus de code
-     * die de robot steeds uitvoert (bijvoorbeeld positieveranderingen). Wanneer
-     * de methode true teruggeeft (zoals in het voorbeeld), betekent dit dat
-     * er inderdaad iets veranderd is en dat deze nieuwe informatie naar de views
-     * moet worden gestuurd. Wordt false teruggegeven, dan betekent dit dat er niks
-     * is veranderd, en de informatie hoeft dus niet naar de views te worden gestuurd.
-     * (Omdat de informatie niet veranderd is, is deze dus ook nog steeds hetzelfde als
-     * in de view)
+     * Deze update methode wordt door de World aangeroepen wanneer de World zelf
+     * geupdate wordt. Dit betekent dat elk object, ook deze robot, in de 3D wereld
+     * steeds een beetje tijd krijgt om een update uit te voeren. In de
+     * updatemethode hieronder schrijf je dus de code die de robot steeds uitvoert
+     * (bijvoorbeeld positieveranderingen). Wanneer de methode true teruggeeft
+     * (zoals in het voorbeeld), betekent dit dat er inderdaad iets veranderd is en
+     * dat deze nieuwe informatie naar de views moet worden gestuurd. Wordt false
+     * teruggegeven, dan betekent dit dat er niks is veranderd, en de informatie
+     * hoeft dus niet naar de views te worden gestuurd. (Omdat de informatie niet
+     * veranderd is, is deze dus ook nog steeds hetzelfde als in de view)
      */
     @Override
-    public boolean update() {   
+    public boolean update() {
         return true;
     }
 
@@ -69,31 +68,31 @@ public class Product implements Object3D, Updatable {
     @Override
     public String getType() {
         /*
-         * Dit onderdeel wordt gebruikt om het type van dit object als stringwaarde terug
-         * te kunnen geven. Het moet een stringwaarde zijn omdat deze informatie nodig
-         * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
-         * javascript code wordt dit dan weer verder afgehandeld.
+         * Dit onderdeel wordt gebruikt om het type van dit object als stringwaarde
+         * terug te kunnen geven. Het moet een stringwaarde zijn omdat deze informatie
+         * nodig is op de client, en die verstuurd moet kunnen worden naar de browser.
+         * In de javascript code wordt dit dan weer verder afgehandeld.
          */
         return Product.class.getSimpleName().toLowerCase();
     }
 
-    public boolean isPickedUp(){
+    public boolean isPickedUp() {
         return pickedUp;
     }
 
-    public void setPickedUp(boolean pickedUp){
+    public void setPickedUp(boolean pickedUp) {
         this.pickedUp = pickedUp;
     }
 
-    public void setX(double x){
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(double y){
+    public void setY(double y) {
         this.y = y;
     }
 
-    public void setZ(double z){
+    public void setZ(double z) {
         this.z = z;
     }
 
